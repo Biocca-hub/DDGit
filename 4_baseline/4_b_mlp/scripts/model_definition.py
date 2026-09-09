@@ -256,28 +256,28 @@ def training_split(folds):
 
 training_idx, val_idx, test_idx = training_split([0,1,2,3,4])
 
-xs = ['../features/tensors1/fold_1_X_tensor.pt',
-        '../features/tensors1/fold_2_X_tensor.pt',
-        '../features/tensors1/fold_3_X_tensor.pt',
-        '../features/tensors1/fold_4_X_tensor.pt',
-        '../features/tensors1/fold_5_X_tensor.pt']
+xs = ['../input/fold_1_X_tensor.pt',
+        '../input/fold_2_X_tensor.pt',
+        '../input/fold_3_X_tensor.pt',
+        '../input/fold_4_X_tensor.pt',
+        '../input/fold_5_X_tensor.pt']
 
-ys = ['../features/tensors/fold_1_Y_tensor.pt',
-        '../features/tensors/fold_2_Y_tensor.pt',
-        '../features/tensors/fold_3_Y_tensor.pt',
-        '../features/tensors/fold_4_Y_tensor.pt',
-        '../features/tensors/fold_5_Y_tensor.pt']
+ys = ['../input/fold_1_Y_tensor.pt',
+        '../input/fold_2_Y_tensor.pt',
+        '../input/fold_3_Y_tensor.pt',
+        '../input/fold_4_Y_tensor.pt',
+        '../input/fold_5_Y_tensor.pt']
 
-srvs = ['../features/tensors/fold_1_SRVs_tensor.pt',
-        '../features/tensors/fold_2_SRVs_tensor.pt',
-        '../features/tensors/fold_3_SRVs_tensor.pt',
-        '../features/tensors/fold_4_SRVs_tensor.pt',
-        '../features/tensors/fold_5_SRVs_tensor.pt']
+srvs = ['../input/fold_1_SRVs_tensor.pt',
+        '../input/fold_2_SRVs_tensor.pt',
+        '../input/fold_3_SRVs_tensor.pt',
+        '../input/fold_4_SRVs_tensor.pt',
+        '../input/fold_5_SRVs_tensor.pt']
     
 Xs = tensor_list(xs)
 Ys = tensor_list(ys)
 
-print(type(Xs))
+'''print(type(Xs))
 print(len(Xs))
 
 print("Xs[0] shape:", Xs[0].shape)
@@ -288,19 +288,19 @@ print("Xs[0][:5]:", Xs[0][:5])
 if Ys[0].ndim > 0:
     print("Ys[0][:5]:", Ys[0][:5])
 else:
-    print("Ys[0] =", Ys[0])
+    print("Ys[0] =", Ys[0])'''
 
 def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder):
 
-    print("Xs[0].shape =", Xs[0].shape)
-    print("Ys[0].shape =", Ys[0].shape)
+    #print("Xs[0].shape =", Xs[0].shape)
+    #print("Ys[0].shape =", Ys[0].shape)
 
     datasets = []
     for i, (X, Y) in enumerate(zip(Xs, Ys)):
-        print(f"Creating dataset {i}")
+        #print(f"Creating dataset {i}")
         datasets.append(TensorDataset(X, Y))
-        print(f"Created dataset {i}")
-    print("All datasets created")
+        #print(f"Created dataset {i}")
+    #print("All datasets created")
 
     test_pcc_list = [] # STORES PCCs
     test_loss_list = [] # STORES LOSSs
@@ -388,10 +388,10 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder):
         preds.append(best_model.test_outputs["predictions"])
         targs.append(best_model.test_outputs["targets"])
 
-        print("train_loss:", len(model.train_loss_history))
+        '''print("train_loss:", len(model.train_loss_history))
         print("val_loss:", len(model.val_loss_history))
         print("train_pcc:", len(model.train_pcc_history))
-        print("val_pcc:", len(model.val_pcc_history))
+        print("val_pcc:", len(model.val_pcc_history))'''
 
         with open(f"{output_folder}/history_run_{i+1}.csv", "w") as f:
 
