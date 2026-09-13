@@ -163,7 +163,7 @@ def composition_res_surr(df):
                 res_num = line[22:26].strip()
                 icode = line[26].strip()
                 pdb_res = res_num + (icode if icode else "")
-                if line.startswith('ATOM') and line[12:16].strip() == 'CA' and pdb_res != pos:
+                if line.startswith('ATOM') and line[12:16].strip() == 'CA': #and pdb_res != pos:
                     xa = float(line[30:38])
                     ya = float(line[38:46])
                     za = float(line[46:54])
@@ -173,6 +173,7 @@ def composition_res_surr(df):
                         if res_name in res_comp:
                             res_comp[res_name] += 1
                             counter += 1
+                '''
                 elif line.startswith('ATOM') and line[12:16].strip() == 'CA' and pdb_res == pos and line[21]==chain:
                     res_name = line[17:20].strip()
                     if res_name in res_comp:
@@ -180,6 +181,7 @@ def composition_res_surr(df):
                     else:
                         print('Trova', res_name,  'in', pos, 'della catena', chain, 'del file', complex_file.split('/')[-1])
                     counter += 1
+                '''
             if counter == 0:
                 print(f"Nessun vicino per {complex_file.split('/')[-1]}, posizione {pos}")
                 compositions.append([0]*20)
@@ -189,7 +191,7 @@ def composition_res_surr(df):
                     comps.append(res_comp[aa]/counter)
                 else:
                     print(complex_file)
-        compositions.append(comps) 
+        #compositions.append(comps) 
             
         found = False
         with open(complex_file, 'r') as reader:
@@ -209,7 +211,7 @@ def composition_res_surr(df):
             compositions.append([0]*20)
             continue
 
-        with open(monomer_file, 'r') as reader:
+        with open(complex_file, 'r') as reader:
             counter = 0
             aa_list = ['ALA', 'ARG', 'ASN', 'ASP', 'CYS', 
                'GLU', 'GLN', 'GLY', 'HIS', 'ILE', 
@@ -223,7 +225,7 @@ def composition_res_surr(df):
                 res_num = line[22:26].strip()
                 icode = line[26].strip()
                 pdb_res = res_num + (icode if icode else "")
-                if line.startswith('ATOM') and line[12:16].strip() == 'CA' and pdb_res != pos:
+                if line.startswith('ATOM') and line[12:16].strip() == 'CA' and line[21]==chain: #and pdb_res != pos:
                     xa = float(line[30:38])
                     ya = float(line[38:46])
                     za = float(line[46:54])
@@ -233,6 +235,7 @@ def composition_res_surr(df):
                         if res_name in res_comp:
                             res_comp[res_name] += 1
                             counter += 1
+                '''
                 elif line.startswith('ATOM') and line[12:16].strip() == 'CA' and pdb_res == pos and line[21]==chain:
                     res_name = line[17:20].strip()
                     if res_name in res_comp:
@@ -240,6 +243,7 @@ def composition_res_surr(df):
                     else:
                         print('Trova', res_name,  'in', pos, 'della catena', chain, 'del file', complex_file.split('/')[-1])
                     counter += 1
+                '''
             if counter == 0:
                 print(f"Nessun vicino per {complex_file.split('/')[-1]}, posizione {pos}")
                 compositions.append([0]*20)
@@ -292,7 +296,7 @@ for j in range(6):
             x[i][20+k] = compositions[i][k]
         x[i][60] = rsa['rsa_complex'][i]
         x[i][61] = rsa['rsa_monomer'][i]
-    torch.save(x, 'tensors1/'+tensors[j]+'_X_tensor.pt')
+    torch.save(x, 'tensor2/'+tensors[j]+'_X_tensor.pt')
     #print(x)
     #print('Saved tensor ', j+1, '(', tensors[j], ')', '\n')'''
 '''
