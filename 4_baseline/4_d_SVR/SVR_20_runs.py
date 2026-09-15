@@ -103,6 +103,7 @@ srvs = ['../4_b_mlp/input/fold_1_SRVs_tensor.pt',
 
 #print(len(Xs))
 #print(Ys)
+"""
 best_pcc = -1
 best_params = None
 best_model = None
@@ -122,6 +123,12 @@ with tqdm(total=total_runs, desc="Grid Search") as pbar:
                     
                     Y_train = torch.cat([torch.load(ys[j]) for j in training_idx[i]]).numpy()
                     Y_val = torch.load(ys[val_idx[i]]).numpy()
+                    
+                    # Prova pesando i targets
+
+                    #weights = np.ones(len(Y_train))
+
+                    #weights[Y_train > 0] = 5.0
 
                     model = SVR(
                                 kernel='rbf',
@@ -130,7 +137,12 @@ with tqdm(total=total_runs, desc="Grid Search") as pbar:
                                 gamma=gamma
                             )
 
-                    model.fit(X_train, Y_train)
+                    # Prova pesando i targets
+                    model.fit(
+                               X_train,
+                               Y_train,
+                               #sample_weight=weights
+                                )
 
                     pred_val = model.predict(X_val)
                     val_pcc = pearsonr(Y_val, pred_val)[0]
@@ -148,7 +160,8 @@ with tqdm(total=total_runs, desc="Grid Search") as pbar:
 
 print("Best PCC:", best_pcc)
 print("Best params:", best_params)
-
+"""
+best_params= [10, 0.1, 0.01]
 training_idx, val_idx, test_idx = training_split([0,1,2,3,4])
 
 with tqdm(total=20, desc="Cross validation") as pbar:
@@ -156,6 +169,7 @@ with tqdm(total=20, desc="Cross validation") as pbar:
     losses = []
     predictions = []
     targets = []
+    residui = []
     for i in range(20):
                             
         X_train = torch.cat([torch.load(xs[j]) for j in training_idx[i]]).numpy()
@@ -189,12 +203,15 @@ with tqdm(total=20, desc="Cross validation") as pbar:
         pccs.append(test_pcc)
         predictions.append(pred_test)
         targets.append(Y_test)
+        residui.append(np.mean(pred_test - Y_test))
                         
         pbar.update(1)
 
 print("Test PCC:", np.mean(pccs), "±", np.std(pccs))
 print("Test MSE:", np.mean(losses),"±", np.std(losses))
+print("Average residual:", np.mean(residui))
 
+"""
 with tqdm(total=20, desc="Scatter plots") as pbar:
     for i in range(len(predictions)):
         df = pd.DataFrame({'targets': targets[i], 'predictions': predictions[i]})
@@ -317,149 +334,40 @@ with tqdm(total=20, desc="Scatter plots") as pbar:
         plt.tight_layout()
 
         plt.savefig(
-            f'scatter{i+1}.png',
+            f'scatters/no_weights/scatter{i+1}.png',
             dpi=600,
             bbox_inches='tight'
         )
+        plt.close()
         pbar.update(1)
-    
-
-
-"""
-X_test = torch.load(xs[test_idx[i]]).numpy()
-
-Y_test = torch.load(ys[test_idx[i]]).numpy()
-
-pred_test = best_model.predict(X_test)
-
-test_pcc = pearsonr(Y_test, pred_test)[0]
-test_mse = mean_squared_error(Y_test, pred_test)
-
-
-df = pd.DataFrame({'targets': Y_test, 'predictions': pred_test})
-
-# ======================================
-# FIGURA
-# ======================================
-
-fig, ax = plt.subplots(figsize=(8, 8))
-
-scatter = sns.scatterplot(
-    data=df,
-    x="targets",
-    y="predictions",
-    color="navy",
-    s=15,
-    edgecolor='black',
-    linewidth=0.1,
-    alpha=0.08,
-    legend=False,
-    ax=ax
+"""    
+all_res = np.concatenate(
+    [pred - true for pred, true in zip(predictions, targets)]
 )
 
-# ======================================
-# LIMITI ASSI
-# ======================================
-
-min_val = min(
-    df['targets'].min(),
-    df['predictions'].min()
-)
-
-max_val = max(
-    df['targets'].max(),
-    df['predictions'].max()
-)
-
-pad = 0.05 * (max_val - min_val)
-
-ax.set_xlim(min_val - pad, max_val + pad)
-ax.set_ylim(min_val - pad, max_val + pad)
-
-# ======================================
-# RETTA y = x
-# ======================================
-
-ax.plot(
-    [min_val, max_val],
-    [min_val, max_val],
-    color='blue',
-    linestyle='--',
-    linewidth=1,
-    label='y = x'
-)
-
-# ======================================
-# x = 0 e y = 0
-# ======================================
-
-ax.axvline(
-    x=0,
-    color='blue',
-    linestyle='--',
-    linewidth=1
-)
-
-ax.axhline(
-    y=0,
-    color='blue',
-    linestyle='--',
-    linewidth=1
-)
-
-# ======================================
-# MEDIE
-# ======================================
-
-mean_target = df['targets'].mean()
-mean_prediction = df['predictions'].mean()
-
-mean_diag = (mean_target + mean_prediction) / 2
-
-# Media sulla diagonale
-ax.scatter(
-    mean_diag,
-    mean_diag,
-    marker='*',
-    s=120,
-    color='yellow',
-    edgecolor='black',
-    linewidth=1.2,
-    zorder=10,
-    label='Mean on y=x'
-)
-
-# Media reale
-ax.scatter(
-    mean_target,
-    mean_prediction,
-    marker='*',
-    s=120,
-    color='red',
-    edgecolor='black',
-    linewidth=0.5,
-    zorder=20,
-    label='Mean'
-)
-
-# ======================================
-# STILE
-# ======================================
-
-ax.set_aspect('equal', adjustable='box')
-
-ax.set_xlabel("Target")
-ax.set_ylabel("Prediction")
-ax.set_title("Predictions vs Targets (SVR run 6/20)")
-
-ax.legend(frameon=True)
-
-plt.tight_layout()
-
+plt.hist(all_res, bins=50)
+plt.axvline(0, color="red")
 plt.savefig(
-    'scatter.png',
-    dpi=600,
-    bbox_inches='tight'
-)
-"""
+            f'residuals.png',
+            dpi=600,
+            bbox_inches='tight'
+        )
+plt.close()
 
+all_pred = np.concatenate(predictions)
+all_true = np.concatenate(targets)
+
+plt.scatter(all_true, all_pred, alpha=0.2)
+
+m = min(all_true.min(), all_pred.min())
+M = max(all_true.max(), all_pred.max())
+
+plt.plot([m, M], [m, M], "r--")
+plt.xlabel("True")
+plt.ylabel("Pred")
+plt.savefig(
+            'scatters/no_weights/scatter.png',
+            dpi = 600,
+            bbox_inches = 'tight'
+            )
+plt.close()
