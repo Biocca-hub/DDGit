@@ -1,8 +1,11 @@
 import pandas as pd
-from mlp_save_all import cv_run as c
+#from model_parametrized import cv_run as c
+
+from save_predictions import cv_run as c
+
 
 # DEFINIZIONE IPERPARAMETRI PER CROSS VALIDATION
-folder = '../output/best_combination'
+folder = '../output/best_combination/good_split_all_predictions'
 pat = 100
 warm = 500
 max_ep = 5000
