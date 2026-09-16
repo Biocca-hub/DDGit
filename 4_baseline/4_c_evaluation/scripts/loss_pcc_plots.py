@@ -152,6 +152,7 @@ def pcc_plot(df, figname, single):
                 dpi=600,
                 bbox_inches='tight',
                 facecolor='white')
+    plt.close()
 
 def loss_plot(df, figname, single):
     # ======================================
@@ -302,8 +303,9 @@ def loss_plot(df, figname, single):
                 dpi=600,
                 bbox_inches='tight',
                 facecolor='white')
+    plt.close()
 
-
+"""
 # Initialize data frame to store 'history_run_{}.csv' files
 val = pd.DataFrame({'epoch': [],'run': [],'train_loss': [],'val_loss': [],'train_pcc': [],'val_pcc': []})
 
@@ -320,3 +322,4 @@ for i in range(20):
     #df.insert(1, 'run', run)
     # Adding run related df to general df
     #val = pd.concat([val, df], ignore_index=True)
+"""

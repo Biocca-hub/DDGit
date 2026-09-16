@@ -457,7 +457,8 @@ all_Xs = torch.cat(tensor_list(xs))
 all_Ys = torch.cat(tensor_list(ys))
 
 def random_run(hidden_dims, pat, max_ep, warm,
-               output, scatter, runs, output_folder):
+               output, scatter, runs, output_folder, 
+               activation, dpout, loss_f):
 
     test_loss_list = []
     test_pcc_list = []
@@ -466,7 +467,7 @@ def random_run(hidden_dims, pat, max_ep, warm,
 
     for i in tqdm(range(runs), desc='Training progress:'):
 
-        groups = torch.load(f'r_splits/split_{i+1}.pt')
+        groups = torch.load(f'../input/random_split/split_{i+1}.pt')
 
         tot = all_Xs.shape[0]
 
@@ -620,4 +621,9 @@ def random_run(hidden_dims, pat, max_ep, warm,
 
         writer.write("\n".join(to_write))
     
-    
+    pcc_max = np.max(test_pcc_list)
+    pcc_min = np.min(test_pcc_list)
+    pcc_mean = np.mean(test_pcc_list)
+    pcc_std = np.std(test_pcc_list)
+
+    return pcc_max, pcc_min, pcc_mean, pcc_std 

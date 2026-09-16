@@ -136,8 +136,10 @@ def scatter_plot(df, figname):
         dpi=600,
         bbox_inches='tight'
     )
+    plt.close()
 
 
+"""
 file = '../../4_b_mlp/output/grid_search/relu_MSE_128_64_32_0.7/scat.txt'
 
 with open(file, 'r') as reader:
@@ -163,7 +165,7 @@ for i in range(len(ps)):
 
 df = pd.DataFrame({'predictions': all_ps, 'targets': all_tgs})
 scatter_plot(df, f'../output/best_plots/scatter_20_runs')
-
+"""
 """
 sns.set_theme(style="whitegrid", palette="viridis")
 
