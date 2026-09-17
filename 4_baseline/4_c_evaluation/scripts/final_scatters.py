@@ -89,19 +89,9 @@ val_df = pd.read_csv(val_file, sep = '\t')
 test_file = '../../4_b_mlp/output/best_combination/final/test_predictions.tsv'
 test_df = pd.read_csv(test_file, sep = '\t')
 
-"""Index(['run', 'best_epoch', 'best_pred', 'best_targ', 'last_epoch',
-       'last_pred', 'last_target'],
-      dtype='str')
+splits = pd.read_csv('../output/splits.tsv', sep = '\t')
 
-Index(['run', 'best_epoch', 'best_pred', 'best_targ', 'last_epoch',
-       'last_pred', 'last_target'],
-      dtype='str')
-
-Index(['run', 'best_epoch', 'pred', 'targ'], dtype='str')"""
-
-scatter = [tr_df, val_df, test_df]
 for i in range(20):
-
     sns.set_theme(style="whitegrid", 
                 rc={
                     "grid.color": "lightblue",       # Colore delle linee (es. "black", "#E0E0E0")
@@ -127,17 +117,21 @@ for i in range(20):
             figsize=(18, 6)
         )
 
+    tr_f = splits['Training'][i]
+    val_f = splits['Validation'][i]
+    test_f = splits['Test'][i]
+
     train_targets = ast.literal_eval(tr_df.loc[i, "best_targ"])
     train_predictions = ast.literal_eval(tr_df.loc[i, "best_pred"])
-    single_scatter(axes[0],train_targets,train_predictions,"Training")
+    single_scatter(axes[0],train_targets,train_predictions,f"Training: {tr_f}")
 
     val_targets = ast.literal_eval(val_df.loc[i, "best_targ"])
     val_predictions = ast.literal_eval(val_df.loc[i, "best_pred"])
-    single_scatter(axes[1], val_targets, val_predictions, "Validation")
+    single_scatter(axes[1], val_targets, val_predictions, f"Validation: {val_f}")
 
     test_targets = ast.literal_eval(test_df.loc[i, 'targ'])
     test_predictions = ast.literal_eval(test_df.loc[i, 'pred'])
-    single_scatter(axes[2], test_targets, test_predictions, "Test")
+    single_scatter(axes[2], test_targets, test_predictions, f"Test: {test_f}")
 
     fig.suptitle(
             f"Run {i+1}\nBest Epoch: {tr_df.best_epoch[i]}\n",
@@ -147,7 +141,7 @@ for i in range(20):
     plt.tight_layout()
 
     plt.savefig(
-            f"../output/be_scatter_{i+1}.png",
+            f"../output/best_plots/20_splits/comparative_scatter/best_ep/{i+1}_scatter_{'_'.join(tr_f.split(' '))}_{val_f}_{test_f}.png",
             dpi=600,
             bbox_inches="tight"
         )
@@ -197,10 +191,9 @@ for i in range(20):
     plt.tight_layout()
 
     plt.savefig(
-            f"../output/le_scatter_{i+1}.png",
+            f"../output/best_plots/20_splits/comparative_scatter/last_ep/{i+1}_scatter_{'_'.join(tr_f.split(' '))}_{val_f}_{test_f}.png",
             dpi=600,
             bbox_inches="tight"
         )
 
     plt.close()
-    
