@@ -1,0 +1,130 @@
+RUN 1
+Training set: [0, 1, 2]
+Validation set: 3
+Test set: 4
+
+RUN 2
+Training set: [0, 1, 2]
+Validation set: 4
+Test set: 3
+
+
+
+
+RUN 3
+Training set: [0, 1, 3]
+Validation set: 2
+Test set: 4
+
+RUN 4
+Training set: [0, 1, 3]
+Validation set: 4
+Test set: 2
+
+
+
+
+RUN 5
+Training set: [0, 1, 4]
+Validation set: 2
+Test set: 3
+
+RUN 6
+Training set: [0, 1, 4]
+Validation set: 3
+Test set: 2
+
+
+
+
+RUN 7
+Training set: [0, 2, 3]
+Validation set: 1
+Test set: 4
+
+RUN 8
+Training set: [0, 2, 3]
+Validation set: 4
+Test set: 1
+
+
+
+
+RUN 9
+Training set: [0, 2, 4]
+Validation set: 1
+Test set: 3
+
+RUN 10
+Training set: [0, 2, 4]
+Validation set: 3
+Test set: 1
+
+
+
+
+RUN 11
+Training set: [0, 3, 4]
+Validation set: 1
+Test set: 2
+
+RUN 12
+Training set: [0, 3, 4]
+Validation set: 2
+Test set: 1
+
+
+
+
+RUN 13
+Training set: [1, 2, 3]
+Validation set: 0
+Test set: 4
+
+RUN 14
+Training set: [1, 2, 3]
+Validation set: 4
+Test set: 0
+
+
+
+
+RUN 15
+Training set: [1, 2, 4]
+Validation set: 0
+Test set: 3
+
+RUN 16
+Training set: [1, 2, 4]
+Validation set: 3
+Test set: 0
+
+
+
+
+RUN 17
+Training set: [1, 3, 4]
+Validation set: 0
+Test set: 2
+
+RUN 18
+Training set: [1, 3, 4]
+Validation set: 2
+Test set: 0
+
+
+
+
+RUN 19
+Training set: [2, 3, 4]
+Validation set: 0
+Test set: 1
+
+RUN 20
+Training set: [2, 3, 4]
+Validation set: 1
+Test set: 0
+
+
+
+
