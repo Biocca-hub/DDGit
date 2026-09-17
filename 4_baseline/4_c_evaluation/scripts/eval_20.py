@@ -27,6 +27,19 @@ def single_scatter(ax, targets, predictions, title):
         "predictions": predictions
     })
 
+    sns.set_theme(style="whitegrid", palette="viridis")
+
+    plt.rcParams.update({
+            "font.family": "serif",
+            "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
+            "font.size": 14,
+            "axes.labelsize": 16,
+            "axes.titlesize": 18,
+            "xtick.labelsize": 13,
+            "ytick.labelsize": 13,
+            "legend.fontsize": 13
+        })
+
     sns.scatterplot(
         data=df_plot,
         x="targets",
@@ -57,8 +70,8 @@ def single_scatter(ax, targets, predictions, title):
     )
 
     # x = 0 e y = 0
-    ax.axvline(0, color="blue", linestyle="--", linewidth=1)
-    ax.axhline(0, color="blue", linestyle="--", linewidth=1)
+    ax.axvline(0, color="blue", linestyle="-", linewidth=1)
+    ax.axhline(0, color="blue", linestyle="-", linewidth=1)
 
     # medie
     mean_target = df_plot["targets"].mean()
