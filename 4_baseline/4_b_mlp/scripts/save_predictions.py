@@ -32,8 +32,11 @@ class MLP(pl.LightningModule):
         self.best_train_targets = None
         self.best_val_preds = None
         self.best_val_targets = None
-        #self.last_train_preds = None
-        #self.last_train_targets = None
+        self.last_train_preds = None
+        self.last_train_targets = None
+        self.last_val_preds = None
+        self.last_val_targets = None
+        self.last_epoch = None
         
         layers = []
 
@@ -91,12 +94,17 @@ class MLP(pl.LightningModule):
                                 self.current_epoch_train_pccs
                                 ).mean()
 
+        self.last_epoch = self.current_epoch + 1
+
         self.train_loss_history.append(epoch_loss.item())
         self.train_pcc_history.append(epoch_pcc.item())
 
         self.log("train_loss_epoch", epoch_loss)
         self.log("train_pcc_epoch", epoch_pcc)
         
+        self.last_train_preds = (torch.cat(self.train_preds_epoch).detach())
+
+        self.last_train_targets = (torch.cat(self.train_targets_epoch).detach())
     
     # VALIDATION
 
@@ -119,21 +127,20 @@ class MLP(pl.LightningModule):
         pcc = pearson_corr(y_hat, y)
 
         if loss.item() < self.best_val_loss:
+
             self.best_val_loss = loss.item()
 
-            self.best_val_preds = y_hat.detach().cpu()
-            self.best_val_targets = y.detach().cpu()
+            self.best_val_preds = y_hat.detach()
+            self.best_val_targets = y.detach()
 
             self.best_train_preds = (
                 torch.cat(self.train_preds_epoch)
                 .detach()
-                .cpu()
             )
 
             self.best_train_targets = (
                 torch.cat(self.train_targets_epoch)
                 .detach()
-                .cpu()
             )
 
         self.log("val_loss", loss, prog_bar=True)
@@ -141,6 +148,9 @@ class MLP(pl.LightningModule):
 
         self.val_loss_history.append(loss.item())
         self.val_pcc_history.append(pcc.item())
+
+        self.last_val_preds = y_hat.detach()
+        self.last_val_targets = y.detach()
 
     # TEST
 
@@ -165,7 +175,14 @@ class MLP(pl.LightningModule):
 
         self.log("test_loss", loss)
         self.log("test_pcc", pcc)
-        self.test_outputs = {"predictions": y_hat, "targets": y}
+
+        self.last_test_preds = y_hat.detach()
+        self.last_test_targets = y.detach()
+
+        self.test_outputs = {
+                            "predictions": self.last_test_preds,
+                            "targets": self.last_test_targets
+                            }
 
     # OPTIMIZER
 
@@ -211,28 +228,17 @@ Ys = tensor_list(ys)
 
 def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activation, dpout, loss_f):
 
-    #print("Xs[0].shape =", Xs[0].shape)
-    #print("Ys[0].shape =", Ys[0].shape)
-
     datasets = []
     for i, (X, Y) in enumerate(zip(Xs, Ys)):
-        #print(f"Creating dataset {i}")
         datasets.append(TensorDataset(X, Y))
-        #print(f"Created dataset {i}")
-    #print("All datasets created")
-
-
-    all_train_targets = []
-    all_train_predictions = []
-
-    all_val_targets = []
-    all_val_predictions = []
-
-    test_preds = []
-    test_targs = []
 
     test_pcc_list = [] # STORES PCCs
     test_loss_list = [] # STORES LOSSs
+    
+
+    train_rows = []
+    val_rows = []
+    test_rows = []
 
     for i in tqdm(range(20), desc = 'Training progress:'):
 
@@ -250,9 +256,7 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
         
         val_data = datasets[val_idx[i]]
         test_data = datasets[test_idx[i]] 
-        
-        #print(f'Training folds: {training_idx[i]}\nValidation fold: {val_idx[i]}\nTesting fold: {test_idx[i]}\n\n')
-        
+                
         train_loader = DataLoader(tr_data, batch_size=32, sampler=MinSizeSampler(tr_split_ranges, tr_min_size))
         val_loader = DataLoader(val_data, batch_size=32, shuffle=True)
         test_loader = DataLoader(test_data, batch_size=32)    
@@ -278,7 +282,6 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                                     mode="min",
                                     save_top_k=1
                                 )
-        print(early_stop._check_on_train_epoch_end)
 
         trainer = pl.Trainer(
                             max_epochs=max_ep,
@@ -289,34 +292,6 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                         )
         
         trainer.fit(model, train_loader, val_loader)
-
-        all_train_predictions.append(model.best_train_preds)
-        all_train_targets.append(model.best_train_targets)
-
-        all_val_predictions.append(model.best_val_preds)
-        all_val_targets.append(model.best_val_targets)
-
-        with open(f"{output_folder}/train_val_run_{i+1}.txt", "w") as f:
-
-            f.write(
-                f"BestTrainPredictions: "
-                f"{str(model.best_train_preds.tolist())[1:-1]}\n"
-            )
-
-            f.write(
-                f"BestTrainTargets: "
-                f"{str(model.best_train_targets.tolist())[1:-1]}\n"
-            )
-
-            f.write(
-                f"BestValidationPredictions: "
-                f"{str(model.best_val_preds.tolist())[1:-1]}\n"
-            )
-
-            f.write(
-                f"BestValidationTargets: "
-                f"{str(model.best_val_targets.tolist())[1:-1]}\n"
-            )
 
         best_model = MLP.load_from_checkpoint(
                                             checkpoint.best_model_path,
@@ -330,8 +305,28 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
 
         ckpt = torch.load(checkpoint.best_model_path)
 
-        best_epoch = ckpt["epoch"]
+        best_epoch = ckpt["epoch"] + 1
         best_val_loss = checkpoint.best_model_score.item()
+
+        train_rows.append({
+                            "run": i + 1,
+                            "best_epoch": best_epoch,
+                            "best_pred": model.best_train_preds,
+                            "best_targ": model.best_train_targets,
+                            "last_epoch": model.last_epoch,
+                            "last_pred": model.last_train_preds,
+                            "last_target": model.last_train_targets
+                        })
+
+        val_rows.append({
+                        "run": i + 1,
+                        "best_epoch": best_epoch,
+                        "best_pred": model.best_val_preds,
+                        "best_targ": model.best_val_targets,
+                        "last_epoch": model.last_epoch,
+                        "last_pred": model.last_val_preds,
+                        "last_target": model.last_val_targets
+                        })
 
         with open(f"{output_folder}/best_epochs.txt", "a") as f:
             f.write(
@@ -344,12 +339,16 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                             best_model,
                             dataloaders=test_loader
                         )
+        
+        test_rows.append({
+                        "run": i + 1,
+                        "best_epoch": best_epoch,
+                        "pred": best_model.test_outputs["predictions"],
+                        "targ": best_model.test_outputs["targets"]
+                    })
 
         test_loss_list.append(results[0]['test_loss'])
         test_pcc_list.append(results[0]['test_pcc'])
-
-        test_preds.append(best_model.test_outputs["predictions"])
-        test_targs.append(best_model.test_outputs["targets"])
 
         with open(f"{output_folder}/history_run_{i+1}.csv", "w") as f:
 
@@ -374,32 +373,56 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
         for pcc, loss in zip(test_pcc_list, test_loss_list):
             f.write(f"{pcc}\t{loss}\n")
 
-    #with open(output, 'w') as writer:
-    #    writer.write('\n'.join(to_out))
-    
-    
-    with open(scatter, "w") as writer:
-        writer.write(
-            "run_number\t"
-            "train_targets\t"
-            "train_predictions\t"
-            "val_targets\t"
-            "val_predictions\t"
-            "test_targets\t"
-            "test_predictions\n"
+    with open(f"{output_folder}/train_predictions.tsv", "w") as f:
+
+        f.write(
+            "run\tbest_epoch\tbest_pred\tbest_targ\t"
+            "last_epoch\tlast_pred\tlast_target\n"
         )
 
-        for i in range(len(test_preds)):
-            writer.write(
-                f"{i+1}\t"
-                f"{all_train_targets[i].tolist()}\t"
-                f"{all_train_predictions[i].tolist()}\t"
-                f"{all_val_targets[i].tolist()}\t"
-                f"{all_val_predictions[i].tolist()}\t"
-                f"{test_targs[i].tolist()}\t"
-                f"{test_preds[i].tolist()}\n"
+        for r in train_rows:
+            f.write(
+                f"{r['run']}\t"
+                f"{r['best_epoch']}\t"
+                f"{r['best_pred'].tolist()}\t"
+                f"{r['best_targ'].tolist()}\t"
+                f"{r['last_epoch']}\t"
+                f"{r['last_pred'].tolist()}\t"
+                f"{r['last_target'].tolist()}\n"
             )
     
+    with open(f"{output_folder}/validation_predictions.tsv", "w") as f:
+
+        f.write(
+            "run\tbest_epoch\tbest_pred\tbest_targ\t"
+            "last_epoch\tlast_pred\tlast_target\n"
+        )
+
+        for r in val_rows:
+            f.write(
+                f"{r['run']}\t"
+                f"{r['best_epoch']}\t"
+                f"{r['best_pred'].tolist()}\t"
+                f"{r['best_targ'].tolist()}\t"
+                f"{r['last_epoch']}\t"
+                f"{r['last_pred'].tolist()}\t"
+                f"{r['last_target'].tolist()}\n"
+            )
+    
+    with open(f"{output_folder}/test_predictions.tsv", "w") as f:
+
+        f.write(
+            "run\tbest_epoch\tpred\ttarg\n"
+        )
+
+        for r in test_rows:
+            f.write(
+                f"{r['run']}\t"
+                f"{r['best_epoch']}\t"
+                f"{r['pred'].tolist()}\t"
+                f"{r['targ'].tolist()}\n"
+            )
+
     pcc_max = np.max(test_pcc_list)
     pcc_min = np.min(test_pcc_list)
     pcc_mean = np.mean(test_pcc_list)
