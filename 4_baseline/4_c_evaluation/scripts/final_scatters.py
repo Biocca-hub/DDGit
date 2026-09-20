@@ -82,11 +82,14 @@ def single_scatter(ax, targets, predictions, title):
     ax.set_ylabel("Prediction")
     ax.set_title(title)
 
-tr_file = '../../4_b_mlp/output/best_combination/final/train_predictions.tsv'
+#tr_file = '../../4_b_mlp/output/best_combination/final/train_predictions.tsv'
+tr_file = '../../4_b_mlp/output/best_combination/all_predictions/train_predictions.tsv'
 tr_df = pd.read_csv(tr_file, sep = '\t')
-val_file = '../../4_b_mlp/output/best_combination/final/validation_predictions.tsv'
+#val_file = '../../4_b_mlp/output/best_combination/final/validation_predictions.tsv'
+val_file = '../../4_b_mlp/output/best_combination/all_predictions/validation_predictions.tsv'
 val_df = pd.read_csv(val_file, sep = '\t')
-test_file = '../../4_b_mlp/output/best_combination/final/test_predictions.tsv'
+#test_file = '../../4_b_mlp/output/best_combination/final/test_predictions.tsv'
+test_file = '../../4_b_mlp/output/best_combination/all_predictions/test_predictions.tsv'
 test_df = pd.read_csv(test_file, sep = '\t')
 
 splits = pd.read_csv('../output/splits.tsv', sep = '\t')
@@ -129,8 +132,8 @@ for i in range(20):
     val_predictions = ast.literal_eval(val_df.loc[i, "best_pred"])
     single_scatter(axes[1], val_targets, val_predictions, f"Validation: {val_f}")
 
-    test_targets = ast.literal_eval(test_df.loc[i, 'targ'])
-    test_predictions = ast.literal_eval(test_df.loc[i, 'pred'])
+    test_targets = ast.literal_eval(test_df.loc[i, 'best_targ'])
+    test_predictions = ast.literal_eval(test_df.loc[i, 'best_pred'])
     single_scatter(axes[2], test_targets, test_predictions, f"Test: {test_f}")
 
     fig.suptitle(
@@ -181,6 +184,8 @@ for i in range(20):
     val_predictions = ast.literal_eval(val_df.loc[i, "last_pred"])
     single_scatter(axes[1], val_targets, val_predictions, "Validation")
 
+    test_targets = ast.literal_eval(test_df.loc[i, 'last_targ'])
+    test_predictions = ast.literal_eval(test_df.loc[i, 'last_pred'])
     single_scatter(axes[2], test_targets, test_predictions, "Test")
 
     fig.suptitle(

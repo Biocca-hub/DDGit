@@ -5,7 +5,7 @@ from save_predictions import cv_run as c
 
 
 # DEFINIZIONE IPERPARAMETRI PER CROSS VALIDATION
-folder = '../output/best_combination/final'
+folder = '../output/best_combination/all_predictions'
 pat = 100
 warm = 500
 max_ep = 5000

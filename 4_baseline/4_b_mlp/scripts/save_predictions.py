@@ -335,7 +335,7 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                 f"Best val_loss: {best_val_loss}\n"
                 )
 
-        results = trainer.test(
+        '''results = trainer.test(
                             best_model,
                             dataloaders=test_loader
                         )
@@ -345,7 +345,37 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                         "best_epoch": best_epoch,
                         "pred": best_model.test_outputs["predictions"],
                         "targ": best_model.test_outputs["targets"]
-                    })
+                    })'''
+        
+        # TEST AT BEST EPOCH
+        results = trainer.test(
+            best_model,
+            dataloaders=test_loader
+        )
+
+        best_test_pred = best_model.test_outputs["predictions"]
+        best_test_targ = best_model.test_outputs["targets"]
+
+
+        # TEST AT LAST EPOCH
+        trainer.test(
+            model,
+            dataloaders=test_loader
+        )
+
+        last_test_pred = model.test_outputs["predictions"]
+        last_test_targ = model.test_outputs["targets"]
+
+
+        test_rows.append({
+            "run": i + 1,
+            "best_epoch": best_epoch,
+            "best_pred": best_test_pred,
+            "best_targ": best_test_targ,
+            "last_epoch": model.last_epoch,
+            "last_pred": last_test_pred,
+            "last_targ": last_test_targ
+        })
 
         test_loss_list.append(results[0]['test_loss'])
         test_pcc_list.append(results[0]['test_pcc'])
@@ -409,7 +439,7 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                 f"{r['last_target'].tolist()}\n"
             )
     
-    with open(f"{output_folder}/test_predictions.tsv", "w") as f:
+    '''with open(f"{output_folder}/test_predictions.tsv", "w") as f:
 
         f.write(
             "run\tbest_epoch\tpred\ttarg\n"
@@ -421,6 +451,24 @@ def cv_run(hidden_dims, pat, max_ep, warm, output, scatter, output_folder, activ
                 f"{r['best_epoch']}\t"
                 f"{r['pred'].tolist()}\t"
                 f"{r['targ'].tolist()}\n"
+            )'''
+    
+    with open(f"{output_folder}/test_predictions.tsv", "w") as f:
+
+        f.write(
+            "run\tbest_epoch\tbest_pred\tbest_targ\t"
+            "last_epoch\tlast_pred\tlast_targ\n"
+        )
+
+        for r in test_rows:
+            f.write(
+                f"{r['run']}\t"
+                f"{r['best_epoch']}\t"
+                f"{r['best_pred'].tolist()}\t"
+                f"{r['best_targ'].tolist()}\t"
+                f"{r['last_epoch']}\t"
+                f"{r['last_pred'].tolist()}\t"
+                f"{r['last_targ'].tolist()}\n"
             )
 
     pcc_max = np.max(test_pcc_list)
