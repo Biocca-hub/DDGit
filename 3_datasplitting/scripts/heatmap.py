@@ -42,7 +42,7 @@ for i in range(1,6):
     ax = sns.heatmap(
             heat,
             square=True,
-            cmap='viridis',
+            cmap='twilight',
             annot = True,
             fmt='.0f',
             annot_kws={"fontsize": 20},
@@ -55,7 +55,7 @@ for i in range(1,6):
     ax.set_ylabel("Wild type\n", fontsize=25)
     ax.set_title(f"Mutation matrix (fold {i})\n", fontsize=25)
     plt.tight_layout()
-    plt.savefig(f'../output/hm_{i}.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'hm_{i}.png', dpi=300, bbox_inches='tight')
     plt.close()    
         
     h = h + heat
@@ -75,7 +75,7 @@ plt.figure(figsize=(20, 20))
 ax = sns.heatmap(
             h,
             square=True,
-            cmap='viridis',
+            cmap='twilight',
             annot = True,
             fmt='.0f',
             annot_kws={"fontsize": 20},
