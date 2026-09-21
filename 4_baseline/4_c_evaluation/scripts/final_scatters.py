@@ -144,7 +144,7 @@ for i in range(20):
     plt.tight_layout()
 
     plt.savefig(
-            f"../output/best_plots/20_splits/comparative_scatter/best_ep/{i+1}_scatter_{'_'.join(tr_f.split(' '))}_{val_f}_{test_f}.png",
+            f"../output/best_plots/20_splits/comparative_scatter/all_predictions/best_ep/{i+1}_scatter_{'_'.join(tr_f.split(' '))}_{val_f}_{test_f}.png",
             dpi=600,
             bbox_inches="tight"
         )
@@ -178,15 +178,15 @@ for i in range(20):
 
     train_targets = ast.literal_eval(tr_df.loc[i, "last_target"])
     train_predictions = ast.literal_eval(tr_df.loc[i, "last_pred"])
-    single_scatter(axes[0],train_targets,train_predictions,"Training")
+    single_scatter(axes[0],train_targets,train_predictions,f"Training: {tr_f}")
 
     val_targets = ast.literal_eval(val_df.loc[i, "last_target"])
     val_predictions = ast.literal_eval(val_df.loc[i, "last_pred"])
-    single_scatter(axes[1], val_targets, val_predictions, "Validation")
+    single_scatter(axes[1], val_targets, val_predictions, f"Validation: {val_f}")
 
     test_targets = ast.literal_eval(test_df.loc[i, 'last_targ'])
     test_predictions = ast.literal_eval(test_df.loc[i, 'last_pred'])
-    single_scatter(axes[2], test_targets, test_predictions, "Test")
+    single_scatter(axes[2], test_targets, test_predictions, f"Test: {test_f}")
 
     fig.suptitle(
             f"Run {i+1}\nLast Epoch: {tr_df.last_epoch[i]}\n",
@@ -196,7 +196,7 @@ for i in range(20):
     plt.tight_layout()
 
     plt.savefig(
-            f"../output/best_plots/20_splits/comparative_scatter/last_ep/{i+1}_scatter_{'_'.join(tr_f.split(' '))}_{val_f}_{test_f}.png",
+            f"../output/best_plots/20_splits/comparative_scatter/all_predictions/last_ep/{i+1}_scatter_{'_'.join(tr_f.split(' '))}_{val_f}_{test_f}.png",
             dpi=600,
             bbox_inches="tight"
         )
