@@ -3,8 +3,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-# Ala, Arg, Asn, Asp, Cys, Glu, Gln, Gly, His, Ile, Leu, Lys, Met, Phe, Pro, Ser, Thr, Trp, Tyr, 
-
 aa_list = list("GAVPLIMFWYSTCNQHDEKR")
 #print(len(aa_list))
 
@@ -29,31 +27,37 @@ for i in range(1,6):
     plt.rcParams.update({
         "font.family": "serif",
         "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
-        "font.size": 14,
-        "axes.labelsize": 16,
-        "axes.titlesize": 18,
-        "xtick.labelsize": 13,
-        "ytick.labelsize": 13,
-        "legend.fontsize": 13
-    })
+        })
 
-    plt.figure(figsize=(20, 20))
+    plt.figure(figsize=(25, 25))
 
     ax = sns.heatmap(
             heat,
             square=True,
-            cmap='twilight',
+            cmap='Blues',
             annot = True,
             fmt='.0f',
-            annot_kws={"fontsize": 20},
+            annot_kws={"fontsize": 30},
             linewidth = 0.5,
+            linecolor='lightblue',
             xticklabels=aa_list,
-            yticklabels=aa_list
+            yticklabels=aa_list,
+            cbar=True,
+            cbar_kws={'label': 'Number of mutations',
+            'shrink': 0.8}
         )
-    ax.tick_params(axis='both', labelsize=20)
-    ax.set_xlabel("\nMutated", fontsize=25)
-    ax.set_ylabel("Wild type\n", fontsize=25)
-    ax.set_title(f"Mutation matrix (fold {i})\n", fontsize=25)
+
+    ax.invert_yaxis()
+
+    # Colorbar
+    cbar = ax.collections[0].colorbar
+    cbar.set_label('\nNumber of mutations\n', fontsize=40)
+    cbar.ax.tick_params(labelsize=30)
+
+    ax.tick_params(axis='both', labelsize=40)
+    ax.set_xlabel("\nMutated\n", fontsize=50)
+    ax.set_ylabel("\nWild type\n", fontsize=50)
+    ax.set_title(f"\nMutation matrix (fold {i})\n", fontsize=70)
     plt.tight_layout()
     plt.savefig(f'hm_{i}.png', dpi=300, bbox_inches='tight')
     plt.close()    
@@ -63,30 +67,36 @@ for i in range(1,6):
 plt.rcParams.update({
         "font.family": "serif",
         "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
-        "font.size": 14,
-        "axes.labelsize": 16,
-        "axes.titlesize": 18,
-        "xtick.labelsize": 13,
-        "ytick.labelsize": 13,
-        "legend.fontsize": 13
-    })
+        })
 
-plt.figure(figsize=(20, 20))
+plt.figure(figsize=(25, 25))
 ax = sns.heatmap(
             h,
             square=True,
-            cmap='twilight',
+            cmap='Blues',
             annot = True,
             fmt='.0f',
-            annot_kws={"fontsize": 20},
+            annot_kws={"fontsize": 30},
             linewidth = 0.5,
+            linecolor = 'lightblue',
             xticklabels=aa_list,
-            yticklabels=aa_list
+            yticklabels=aa_list,
+            cbar=True,
+            cbar_kws={'label': 'Number of mutations',
+            'shrink': 0.8}
         )
-ax.tick_params(axis='both', labelsize=20)
-ax.set_xlabel("\nMutated", fontsize=25)
-ax.set_ylabel("Wild type\n", fontsize=25)
-ax.set_title("Mutation matrix (Training set)\n", fontsize=25)
+
+ax.invert_yaxis()
+
+# Colorbar
+cbar = ax.collections[0].colorbar
+cbar.set_label('\nNumber of mutations\n', fontsize=40)
+cbar.ax.tick_params(labelsize=30)
+
+ax.tick_params(axis='both', labelsize=40)
+ax.set_xlabel("\nMutated\n", fontsize=50)
+ax.set_ylabel("\nWild type\n", fontsize=50)
+ax.set_title("\nMutation matrix (Training set)\n", fontsize=70)
 
 
 plt.tight_layout()
