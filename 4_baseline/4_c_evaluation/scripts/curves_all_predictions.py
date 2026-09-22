@@ -312,16 +312,18 @@ val = pd.DataFrame({'epoch': [],'run': [],'train_loss': [],'val_loss': [],'train
 for i in range(20):
 #for i in range(500):
     # [128, 64, 32]	relu	0.7	MSE
-    df = pd.read_csv(f'../../4_b_mlp/output/best_combination/all_predictions/history_run_{i+1}.csv', sep=',')
-    figname = f'loss_curve_run_{i+1}'
-    loss_plot(df, figname, single = True)
-    figname = f'pcc_curve_run_{i+1}'
-    pcc_plot(df,figname, single = True)
+    df = pd.read_csv(f'../../4_b_mlp/output/best_combination/all_predictions/history/history_run_{i+1}.csv', sep=',')
+    #figname = f'loss_curve_run_{i+1}'
+    #loss_plot(df, figname, single = True)
+    #figname = f'pcc_curve_run_{i+1}'
+    #pcc_plot(df,figname, single = True)
     # Creates column storing run index
     run = [i+1]*df.shape[0]
     df.insert(1, 'run', run)
     # Adding run related df to general df
     val = pd.concat([val, df], ignore_index=True)
 
-pcc_plot(val, 'pcc_curve.png', single = False)
-loss_plot(val, 'loss_curve.png', single = False)
+#pcc_plot(val, 'pcc_curve.png', single = False)
+#loss_plot(val, 'loss_curve.png', single = False)
+
+val.to_csv('../../4_b_mlp/output/best_combination/all_predictions/complete_history.tsv', sep = '\t')
