@@ -1,7 +1,7 @@
 import pandas as pd 
 
-training = pd.read_csv('training.tsv', sep = '\t')
-bts = pd.read_csv('blind_test_set.tsv', sep = '\t')
+training = pd.read_csv('../input/training.tsv', sep = '\t')
+bts = pd.read_csv('../input/bts.tsv', sep = '\t')
 
 print(f'Training set counts {training.shape[0]} srv')
 print('-'*105)
@@ -22,9 +22,9 @@ print(data.CC_ID.value_counts()[:2])
 print(f'We have to keep them as they are, and split the remaining data in 3 clusters of around {(data.shape[0]-1659-779)/3} mutations')
 print('-'*105)
 
-ccs = pd.read_csv('CC_info.tsv', sep = '\t').sort_values('SRVs', ascending = False)
+ccs = pd.read_csv('../input/CC_info.tsv', sep = '\t')#.sort_values('SRVs', ascending = False)
 ccs.drop('Unnamed: 0', axis='columns', inplace=True)
-#ccs.to_csv('CC_info.tsv', sep = '\t')
+#ccs.to_csv('../output/CC_info.tsv', sep = '\t')
 
 """print('Inspecting the CC infos, we will have:')
 print('Connected component 0: \n1659 SRVs')
@@ -58,5 +58,5 @@ for f in folds:
     fold_ids.append(ids)
     df = data[data['Unique'].isin(ids)]
     i += 1
-    df.to_csv(f'fold_{i}.tsv', sep = '\t', index = False)
+    df.to_csv(f'../output/fold_{i}.tsv', sep = '\t', index = False)
         
