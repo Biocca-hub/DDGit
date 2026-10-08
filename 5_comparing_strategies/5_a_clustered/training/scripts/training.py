@@ -1,6 +1,7 @@
 import pandas as pd 
 import numpy as np
 import torch 
+from baseline import MLP
 
 df = pd.read_csv('../input/ddgit_dataset.tsv', sep = '\t')
 X = torch.load('../input/features.pt')
