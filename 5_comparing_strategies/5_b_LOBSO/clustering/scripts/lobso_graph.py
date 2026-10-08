@@ -45,15 +45,5 @@ connected.to_csv(
     sep='\t',
     index=False
 )
-import networkx as nx
-
-G = nx.Graph()
-
-G.add_nodes_from(set(complexes))
-G.add_edges_from(edges)
-
-print("Nodes:", G.number_of_nodes())
-print("Edges:", G.number_of_edges())
-print("CC:", nx.number_connected_components(G))
 
 
