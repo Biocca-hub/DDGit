@@ -1,67 +1,59 @@
-import pandas as pd
-import networkx as nx
+import torch
+import pandas as pd 
+import numpy as np
 
-final = pd.read_csv('../input/final_data.tsv', sep = '\t')
-del final['Unnamed: 0']
+folders = [
+           '../input/tensors_old_split/features/',
+           '../input/tensors_old_split/labels/',
+           '../input/tensors_old_split/targets/'
+           ]
 
-ddgit_clustering = pd.read_csv('../input/CC_info.tsv', sep = '\t')
-del ddgit_clustering['Unnamed: 0']
+original_folds = ['bts_', 'fold_1_', 'fold_2_', 'fold_3_', 'fold_4_', 'fold_5_']
 
-unique = final['Unique']
-compl = final['Complex']
-pdb = final['PDB_ID']
-chain = final['PDB_ID'].astype(str) + '_' + final['Clean_mut'].str[1]
-chain_id = final['Clean_mut'].str[1]
-wt = final['Clean_mut'].str[0]
-mut = final['Clean_mut'].str[-1]
-position = final['Clean_mut'].str[2:-1]
-ddg = final['DDG_avg']
-location = final['Location']
+types = ['X_tensor.pt',
+         'SRVs_tensor.pt',
+         'Y_tensor.pt'
+        ]
 
-ddgit_cc = []
-for c in chain:
-    for i in range(ddgit_clustering.shape[0]):
-        if c in ddgit_clustering['Nodes'][i].split(','):
-            ddgit_cc.append(ddgit_clustering['CC_ID'][i])
+features = []
+for f in original_folds:
+    features.append(torch.load(f'{folders[0]}{f}{types[0]}'))
 
-graph = pd.read_csv('../5_b_LOBSO/clustering/output/out_proteins_graph.tsv', sep = '\t')
+targets = []
+for f in original_folds:
+    targets.append(torch.load(folders[2]+f+types[2]))
 
-G = nx.from_pandas_edgelist(graph,
-                            source='complex_a',
-                            target='complex_b')
+labels = []
+for f in original_folds:
+    labels.append(torch.load(folders[1]+f+types[1]))
 
-components = sorted(nx.connected_components(G),key=len,reverse=True)
+f = torch.cat(features, dim = 0)
+t = torch.cat(targets, dim = 0)
+l = []
+for lab in labels:
+    l.extend(lab)
 
-component_id = {}
+features_col = list(f.numpy())
+targets_col = list(t.numpy())
 
-for i, component in enumerate(components, start=1):
-    for node in component:
-        component_id[node] = f'{i}'
+df1 = pd.read_csv('../output/ddgit_dataset.tsv', sep = '\t')
+del df1['Unnamed: 0']
+counts = df1['complex'].value_counts()
 
-lobso_cc = final['Complex'].map(component_id).to_list()
+cluster_map = {
+                complex_: cluster_id
+                for cluster_id, complex_ in enumerate(counts.index)
+              }
 
-folds = {'1': [], '2': [], '3': [], '4': [], '5': []}
-for i in range(5):
-    df = pd.read_csv(f'../5_a_clustered/splitting/output/fold_{i+1}.tsv', sep = '\t')
-    folds[str(i+1)].extend(list(set(df['CC_ID'].to_list())))
+df1['loco_cc'] = df1['complex'].map(cluster_map)
 
-cc_to_fold = {cc: int(fold_id)
-              for fold_id, ccs in folds.items()
-              for cc in ccs}
+df2 = pd.DataFrame({'unique': l,
+                    'targets': targets_col,
+                    'features': features_col})
 
-ddgit_fold = [cc_to_fold[cc] for cc in ddgit_cc]
+df1 = df1.set_index('unique').reindex(df2['unique']).reset_index()
+df1.to_csv('../output/ddgit_dataset.tsv', sep = '\t', index = False)
+df1['features']=df2['features']
 
-print(pd.DataFrame({'unique': unique,
-              'complex': compl,
-              'pdb': pdb,
-              'chain': chain,
-              'chain_id': chain_id, 
-              'wt': wt,
-              'mut': mut,
-              'position': position,
-              'location': location,
-              'ddg': ddg,
-              'ddgit_cc': ddgit_cc,
-              'ddgit_fold': ddgit_fold,
-              'lobso_cc': lobso_cc
-              }).tail())
+df1.to_csv('../output/ddgit_input.tsv', sep = '\t', index = False)
+
