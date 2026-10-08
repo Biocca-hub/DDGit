@@ -37,7 +37,7 @@ features_col = list(f.numpy())
 targets_col = list(t.numpy())
 
 df1 = pd.read_csv('../output/ddgit_dataset.tsv', sep = '\t')
-del df1['Unnamed: 0']
+#del df1['Unnamed: 0']
 counts = df1['complex'].value_counts()
 
 cluster_map = {
@@ -52,8 +52,12 @@ df2 = pd.DataFrame({'unique': l,
                     'features': features_col})
 
 df1 = df1.set_index('unique').reindex(df2['unique']).reset_index()
-df1.to_csv('../output/ddgit_dataset.tsv', sep = '\t', index = False)
+#df1.to_csv('../output/ddgit_dataset.tsv', sep = '\t', index = False)
 df1['features']=df2['features']
 
-df1.to_csv('../output/ddgit_input.tsv', sep = '\t', index = False)
+#df1.to_csv('../output/ddgit_input.tsv', sep = '\t', index = False)
 
+
+torch.save(f, '../output/features.pt')
+torch.save(t, '../output/targets.pt')
+torch.save(l, '../output/labels.pt')
