@@ -4,6 +4,12 @@ import torch
 
 df = pd.read_csv('../input/ddgit_dataset.tsv', sep = '\t')
 X = torch.load('../input/features.pt')
+Y = torch.load('../input/targets.pt')
+V = np.array(torch.load('../input/labels.pt'))
+
+#print(type(X))
+#print(type(Y))
+#print(type(V))
 
 for i in range(1,6):
     df_small = df[df.ddgit_fold == i]
@@ -20,7 +26,21 @@ for i in range(1,6):
     #print(X_training.size()[0])
     #print(X_test.size()[0])
 
-    '''I 4 fold di training vanno suddivisi come segue per una CV interna:
+    Y_training = Y[mask]
+    Y_test = Y[indices]
+
+    V_training = V[mask.numpy()]
+    V_test = V[indices.numpy()]
+
+    #print(X_training.size())
+    #print(Y_training.size())
+    #print(V_training.shape) 
+    #print(X_test.size())
+    #print(Y_test.size())
+    #print(V_test.shape) 
+
+'''
+    I 4 fold di training vanno suddivisi come segue per una CV interna:
         • 3 training, di cui una FRAZIONE per la validazione
         • 1 test
        Per ognuna delle 5 run, ottieni una combinazione (che non è rilevante
@@ -38,4 +58,4 @@ for i in range(1,6):
            Queste saranno le metriche relative alla performance che ci
            interessano, in quanto sulle metriche singole dei 5 fold, la media 
            tenderebbe ad essere dominata dai valori estremi.
-    '''
+'''
