@@ -1,0 +1,107 @@
+
+
+
+Q and T have TM > 0.6
+
+24018
+
+
+
+Q or T have TM > 0.6
+
+73053
+
+
+
+Q and T have TM > 0.6
+
+ID1 or ID2 carry SRV
+
+12436
+
+
+
+Q or T have TM > 0.6
+
+ID1 or ID2 carry SRV
+
+37331
+
+
+
+Q and T have TM > 0.6
+
+ID1 and ID2 carry SRV
+
+2760
+
+
+
+Q or T have TM > 0.6
+
+ID1 and ID2 carry SRV
+
+7088
+
+
+
+
+    Tot CCs  PDB arches  UP arches  TM arches  Tot Arches
+0       57        2895       4176      21738       24018 
+
+
+cc_00
+
+
+The CC with most SRVs is CC 0 counting 2808 SRVs
+
+
+    Tot CCs  PDB arches  UP arches  TM arches  Tot Arches
+0        1        2895       4176      71271       73053 
+
+
+cc_01
+
+
+The CC with most SRVs is CC 0 counting 4169 SRVs
+
+
+    Tot CCs  PDB arches  UP arches  TM arches  Tot Arches
+0       60        1140       1639      11496       12436 
+
+
+cc_10
+
+
+The CC with most SRVs is CC 0 counting 2788 SRVs
+
+
+    Tot CCs  PDB arches  UP arches  TM arches  Tot Arches
+0        1        1140       1639      36534       37331 
+
+
+cc_11
+
+
+The CC with most SRVs is CC 0 counting 4169 SRVs
+
+
+    Tot CCs  PDB arches  UP arches  TM arches  Tot Arches
+0       51         158        572       2613        2760 
+
+
+cc_20
+
+
+The CC with most SRVs is CC 0 counting 1659 SRVs
+
+
+    Tot CCs  PDB arches  UP arches  TM arches  Tot Arches
+0        1         158        572       6966        7088 
+
+
+cc_21
+
+
+The CC with most SRVs is CC 0 counting 4144 SRVs
+

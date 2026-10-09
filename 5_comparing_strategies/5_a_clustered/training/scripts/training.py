@@ -42,8 +42,8 @@ for i in range(1,6):
 
 '''
     I 4 fold di training vanno suddivisi come segue per una CV interna:
-        • 3 training, di cui una FRAZIONE per la validazione
-        • 1 test
+            • 3 training, di cui una FRAZIONE per la validazione
+            • 1 test
        Per ognuna delle 5 run, ottieni una combinazione (che non è rilevante
        allo scopo attuale) sulla quale eseguirai training sulle 4 e testerai
        sul fold tenuto fuori dalla validazione interna. Di questo, 

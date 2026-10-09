@@ -1,7 +1,10 @@
 import pandas as pd 
 import networkx as nx
 
-graph = pd.read_csv('../output/out_proteins_graph.tsv', sep = '\t')
+#graph = pd.read_csv('../output/out_proteins_graph.tsv', sep = '\t')
+
+graph = pd.read_csv('../output/out_prot_type_2_graph.tsv', sep = '\t')
+
 
 G = nx.from_pandas_edgelist(graph,
                             source='complex_a',
