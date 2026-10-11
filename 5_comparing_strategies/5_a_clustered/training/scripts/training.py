@@ -12,6 +12,20 @@ V = np.array(torch.load('../input/labels.pt'))
 #print(type(Y))
 #print(type(V))
 
+pat = 100
+warm = 500
+max_ep = 5000
+activations = ['relu', 'sigmoid']
+dpouts = [0.1, 0.3, 0.5, 0.7] 
+losses = ["L1", "MSE"]
+architectures = [[16], [128], [32,16], [128,32], [32,16,16], [128,64,32]]
+
+all_preds = []
+all_targets = []
+all_labels = []
+
+fold_results = []
+
 for i in range(1,6):
     df_small = df[df.ddgit_fold == i]
 
@@ -24,39 +38,17 @@ for i in range(1,6):
 
     X_training = X[mask]
     X_test = X[indices]
-    #print(X_training.size()[0])
-    #print(X_test.size()[0])
 
     Y_training = Y[mask]
     Y_test = Y[indices]
+    all_targets.extend(list(Y_test))
 
     V_training = V[mask.numpy()]
     V_test = V[indices.numpy()]
+    all_labels.extend(list(V_test))
 
-    #print(X_training.size())
-    #print(Y_training.size())
-    #print(V_training.shape) 
-    #print(X_test.size())
-    #print(Y_test.size())
-    #print(V_test.shape) 
+    for h in architectures:
+        for a in activations:
+            for l in losses:
+                for d in dpouts:
 
-'''
-    I 4 fold di training vanno suddivisi come segue per una CV interna:
-            • 3 training, di cui una FRAZIONE per la validazione
-            • 1 test
-       Per ognuna delle 5 run, ottieni una combinazione (che non è rilevante
-       allo scopo attuale) sulla quale eseguirai training sulle 4 e testerai
-       sul fold tenuto fuori dalla validazione interna. Di questo, 
-        1. salva:
-            • target
-            • predizioni
-        2. calcola:
-            • PCC
-            • MSE
-        3. concatena tutti i target e le predizioni per calcolare nuovamente:
-            • PCC
-            • MSE
-           Queste saranno le metriche relative alla performance che ci
-           interessano, in quanto sulle metriche singole dei 5 fold, la media 
-           tenderebbe ad essere dominata dai valori estremi.
-'''
