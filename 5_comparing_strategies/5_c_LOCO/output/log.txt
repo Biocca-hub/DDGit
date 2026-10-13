@@ -1,0 +1,3 @@
+outer 0 | combo 1/96 [16] relu L1 0.1 | inner PCC 0.2038
+outer 0 | combo 2/96 [16] relu L1 0.3 | inner PCC 0.2099
+outer 0 | combo 3/96 [16] relu L1 0.5 | inner PCC 0.2448

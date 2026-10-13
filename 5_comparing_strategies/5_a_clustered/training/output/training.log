@@ -1,0 +1,16 @@
+/mnt/mini3/work/biancag/miniconda3/envs/mlp_env/lib/python3.10/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+outer 1 | combo 1/96 [16] relu L1 0.1 | inner PCC 0.2190
+outer 1 | combo 2/96 [16] relu L1 0.3 | inner PCC 0.2212
+outer 1 | combo 3/96 [16] relu L1 0.5 | inner PCC 0.2754
+outer 1 | combo 4/96 [16] relu L1 0.7 | inner PCC 0.2634
+outer 1 | combo 5/96 [16] relu MSE 0.1 | inner PCC 0.1943
+outer 1 | combo 6/96 [16] relu MSE 0.3 | inner PCC 0.1764
+outer 1 | combo 7/96 [16] relu MSE 0.5 | inner PCC 0.1663
+outer 1 | combo 8/96 [16] relu MSE 0.7 | inner PCC 0.1972
+outer 1 | combo 9/96 [16] sigmoid L1 0.1 | inner PCC 0.2046
+outer 1 | combo 10/96 [16] sigmoid L1 0.3 | inner PCC 0.2053
+outer 1 | combo 11/96 [16] sigmoid L1 0.5 | inner PCC 0.2156
+outer 1 | combo 12/96 [16] sigmoid L1 0.7 | inner PCC 0.2145
+outer 1 | combo 13/96 [16] sigmoid MSE 0.1 | inner PCC 0.2275
+outer 1 | combo 14/96 [16] sigmoid MSE 0.3 | inner PCC 0.1966
+outer 1 | combo 15/96 [16] sigmoid MSE 0.5 | inner PCC 0.2058

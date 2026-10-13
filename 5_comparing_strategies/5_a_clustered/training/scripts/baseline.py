@@ -4,7 +4,7 @@
 
 import torch
 import torch.nn as nn
-import pytorch_lightning as pl
+import lightning.pytorch as pl
 from lightning.pytorch.callbacks import EarlyStopping
 
 # ============================================================
@@ -57,7 +57,12 @@ class EarlyStoppingWithWarmup(EarlyStopping):
         """
         Initialize the early stopping callback and store the
         number of warmup epochs.
+
+        `check_on_train_epoch_end` is forced to False by default:
+        otherwise Lightning runs the standard check at the end of
+        each training epoch and the warmup is never applied.
         """
+        kwargs.setdefault("check_on_train_epoch_end", False)
         super().__init__(**kwargs)
         self.warmup = warmup
 
@@ -95,8 +100,8 @@ class MLP(pl.LightningModule):
     dropout probability.
 
     The model tracks loss and Pearson correlation for training and
-    validation and stores predictions corresponding to the epoch
-    with the best validation loss.
+    validation and stores predictions and weights corresponding to
+    the epoch with the best value of the monitored validation metric.
 
     Parameters
     
@@ -117,9 +122,14 @@ class MLP(pl.LightningModule):
     loss_f : str
         Regression loss function.
         "L1" selects MAE (L1Loss), otherwise MSELoss is used.
+
+    monitor : str
+        Validation metric that defines the best epoch:
+        "val_loss" (lower is better) or "val_pcc" (higher is better).
+        Use the same value as the early stopping callback.
     """
 
-    def __init__(self,input_dim,hidden_dims,activation,dpout,loss_f):
+    def __init__(self,input_dim,hidden_dims,activation,dpout,loss_f,monitor="val_loss"):
         """
         Initialize metric histories, prediction storage,
         neural network architecture and loss function.
@@ -139,15 +149,22 @@ class MLP(pl.LightningModule):
         self.train_pcc_history = []
         self.val_pcc_history = []
 
-        # Best validation loss observed so far.
-        self.best_val_loss = float("inf")
+        # Metric that defines the best epoch, and its best value so far.
+        if monitor not in ("val_loss", "val_pcc"):
+            raise ValueError("monitor must be 'val_loss' or 'val_pcc'")
+
+        self.monitor = monitor
+        self.best_val_monitor = (float("inf") if monitor == "val_loss" else -float("inf"))
+        self.best_epoch = None
+
+        # Copy of the weights at the best epoch (kept in memory).
+        self.best_state = None
 
         # --------------------------------------------------------
         # PREDICTION STORAGE
         # --------------------------------------------------------
 
-        # Predictions/targets corresponding to the epoch with
-        # the lowest validation loss.
+        # Predictions/targets corresponding to the best epoch.
         self.best_train_preds = None
         self.best_train_targets = None
 
@@ -157,6 +174,10 @@ class MLP(pl.LightningModule):
         # Training predictions from the most recently completed epoch.
         self.last_train_preds = None
         self.last_train_targets = None
+
+        # Per-batch training predictions of the epoch in progress.
+        self.train_preds_epoch = []
+        self.train_targets_epoch = []
 
         # --------------------------------------------------------
         # MODEL ARCHITECTURE
@@ -219,6 +240,18 @@ class MLP(pl.LightningModule):
         """
 
         return self.model(x).view(-1)
+
+    def load_best_weights(self):
+        """
+        Restore the weights of the best epoch.
+
+        Early stopping ends training `patience` epochs after the best
+        one, so this must be called after `trainer.fit` and before
+        predicting on held-out data.
+        """
+
+        if self.best_state is not None:
+            self.load_state_dict(self.best_state)
 
     # ============================================================
     # TRAINING
@@ -290,8 +323,11 @@ class MLP(pl.LightningModule):
         This ensures that train PCC is calculated in the same way
         as validation and test PCC.
 
-        The method also stores predictions from the current epoch
-        so they can later be associated with the best validation epoch.
+        The method also stores predictions from the current epoch.
+
+        Note: these predictions are made with dropout active and with
+        weights that change from batch to batch, so train metrics are
+        pessimistic compared with validation ones.
         """
 
         # Concatenate all training batches.
@@ -362,9 +398,10 @@ class MLP(pl.LightningModule):
 
         The method calculates validation loss and Pearson correlation.
 
-        If the current validation loss is lower than the best loss
-        observed so far, predictions and targets from both training
-        and validation are stored as the best epoch results.
+        If the monitored metric is better than the best value
+        observed so far, the weights and the predictions and targets
+        from both training and validation are stored as the best
+        epoch results.
 
         Validation metrics are also logged and added to their
         corresponding history lists.
@@ -380,24 +417,48 @@ class MLP(pl.LightningModule):
 
         pcc = pearson_corr(y_hat, y)
 
-        # Save results if validation loss improved.
-        if loss.item() < self.best_val_loss:
-
-            self.best_val_loss = loss.item()
-
-            self.best_val_preds = y_hat.detach()
-            self.best_val_targets = y.detach()
-
-            # Training predictions corresponding to
-            # the same epoch.
-            self.best_train_preds = (self.last_train_preds.detach())
-
-            self.best_train_targets = (self.last_train_targets.detach())
-
         # Lightning logging.
         self.log("val_loss", loss, prog_bar=True)
 
         self.log("val_pcc", pcc, prog_bar=True)
+
+        # The sanity check runs before any training: it must not
+        # enter the histories or the best-epoch tracking.
+        if self.trainer.sanity_checking:
+            return
+
+        # Save results if the monitored metric improved.
+        # `epoch_monitor` is this epoch's value of the monitored
+        # metric: validation loss or validation PCC.
+        if self.monitor == "val_loss":
+            epoch_monitor = loss.item()
+            improved = epoch_monitor < self.best_val_monitor
+        else:
+            epoch_monitor = pcc.item()
+            improved = epoch_monitor > self.best_val_monitor
+
+        if improved:
+
+            self.best_val_monitor = epoch_monitor
+            self.best_epoch = self.current_epoch
+
+            self.best_val_preds = y_hat.detach()
+            self.best_val_targets = y.detach()
+
+            # Training predictions of the same epoch. Validation runs
+            # before `on_train_epoch_end`, so they are taken from the
+            # per-batch lists, which are already complete here.
+            if self.train_preds_epoch:
+                self.best_train_preds = torch.cat(self.train_preds_epoch)
+                self.best_train_targets = torch.cat(self.train_targets_epoch)
+
+            # Weights of the best epoch. `.clone()` is essential:
+            # without it the dictionary would point to the live
+            # weights and change with them at every training step.
+            self.best_state = {
+                k: v.detach().clone()
+                for k, v in self.state_dict().items()
+            }
 
         # Save metric history.
         self.val_loss_history.append(loss.item())
