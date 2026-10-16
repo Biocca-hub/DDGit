@@ -1,0 +1,5 @@
+lobso_cc: 192 folds | 5 combinations
+combo 1/5 [32, 16, 16] relu L1 0.3 | overall PCC 0.3794 | MSE 2.7026 | RMSE 1.6440
+combo 2/5 [32, 16, 16] sigmoid MSE 0.1 | overall PCC 0.3322 | MSE 2.7953 | RMSE 1.6719
+combo 3/5 [32, 16, 16] relu MSE 0.7 | overall PCC 0.3840 | MSE 2.6617 | RMSE 1.6315
+combo 4/5 [128, 64, 32] relu MSE 0.1 | overall PCC 0.3435 | MSE 2.8599 | RMSE 1.6911
