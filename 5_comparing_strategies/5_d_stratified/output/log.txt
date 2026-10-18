@@ -220,3 +220,164 @@ outer 6 | combo 28/36 [128, 64, 32] relu MSE 0.1 | inner PCC 0.5552
 outer 6 | combo 29/36 [128, 64, 32] relu MSE 0.3 | inner PCC 0.5776
 outer 6 | combo 30/36 [128, 64, 32] relu MSE 0.7 | inner PCC 0.5931
 outer 6 | combo 31/36 [128, 64, 32] sigmoid L1 0.1 | inner PCC 0.5332
+outer 6 | combo 32/36 [128, 64, 32] sigmoid L1 0.3 | inner PCC 0.5280
+outer 6 | combo 33/36 [128, 64, 32] sigmoid L1 0.7 | inner PCC 0.4808
+outer 6 | combo 34/36 [128, 64, 32] sigmoid MSE 0.1 | inner PCC 0.5462
+outer 6 | combo 35/36 [128, 64, 32] sigmoid MSE 0.3 | inner PCC 0.5528
+outer 6 | combo 36/36 [128, 64, 32] sigmoid MSE 0.7 | inner PCC 0.5238
+outer 6 | best ([128, 64, 32], 'relu', 'MSE', 0.7) | test PCC 0.5007 | test MSE 2.2624
+outer 7 | train 3752 (pos 938) | test 417 (pos 105)
+outer 7 | combo 1/36 [32, 16] relu L1 0.1 | inner PCC 0.5123
+outer 7 | combo 2/36 [32, 16] relu L1 0.3 | inner PCC 0.5315
+outer 7 | combo 3/36 [32, 16] relu L1 0.7 | inner PCC 0.5254
+outer 7 | combo 4/36 [32, 16] relu MSE 0.1 | inner PCC 0.5359
+outer 7 | combo 5/36 [32, 16] relu MSE 0.3 | inner PCC 0.5571
+outer 7 | combo 6/36 [32, 16] relu MSE 0.7 | inner PCC 0.5472
+outer 7 | combo 7/36 [32, 16] sigmoid L1 0.1 | inner PCC 0.5015
+outer 7 | combo 8/36 [32, 16] sigmoid L1 0.3 | inner PCC 0.4993
+outer 7 | combo 9/36 [32, 16] sigmoid L1 0.7 | inner PCC 0.4680
+outer 7 | combo 10/36 [32, 16] sigmoid MSE 0.1 | inner PCC 0.5190
+outer 7 | combo 11/36 [32, 16] sigmoid MSE 0.3 | inner PCC 0.4988
+outer 7 | combo 12/36 [32, 16] sigmoid MSE 0.7 | inner PCC 0.4687
+outer 7 | combo 13/36 [32, 16, 16] relu L1 0.1 | inner PCC 0.5131
+outer 7 | combo 14/36 [32, 16, 16] relu L1 0.3 | inner PCC 0.5261
+outer 7 | combo 15/36 [32, 16, 16] relu L1 0.7 | inner PCC 0.5190
+outer 7 | combo 16/36 [32, 16, 16] relu MSE 0.1 | inner PCC 0.5369
+outer 7 | combo 17/36 [32, 16, 16] relu MSE 0.3 | inner PCC 0.5642
+outer 7 | combo 18/36 [32, 16, 16] relu MSE 0.7 | inner PCC 0.5439
+outer 7 | combo 19/36 [32, 16, 16] sigmoid L1 0.1 | inner PCC 0.4936
+outer 7 | combo 20/36 [32, 16, 16] sigmoid L1 0.3 | inner PCC 0.5007
+outer 7 | combo 21/36 [32, 16, 16] sigmoid L1 0.7 | inner PCC 0.4260
+outer 7 | combo 22/36 [32, 16, 16] sigmoid MSE 0.1 | inner PCC 0.4916
+outer 7 | combo 23/36 [32, 16, 16] sigmoid MSE 0.3 | inner PCC 0.5046
+outer 7 | combo 24/36 [32, 16, 16] sigmoid MSE 0.7 | inner PCC 0.4685
+outer 7 | combo 25/36 [128, 64, 32] relu L1 0.1 | inner PCC 0.5109
+outer 7 | combo 26/36 [128, 64, 32] relu L1 0.3 | inner PCC 0.5326
+outer 7 | combo 27/36 [128, 64, 32] relu L1 0.7 | inner PCC 0.5501
+outer 7 | combo 28/36 [128, 64, 32] relu MSE 0.1 | inner PCC 0.5404
+outer 7 | combo 29/36 [128, 64, 32] relu MSE 0.3 | inner PCC 0.5498
+outer 7 | combo 30/36 [128, 64, 32] relu MSE 0.7 | inner PCC 0.5813
+outer 7 | combo 31/36 [128, 64, 32] sigmoid L1 0.1 | inner PCC 0.5085
+outer 7 | combo 32/36 [128, 64, 32] sigmoid L1 0.3 | inner PCC 0.4951
+outer 7 | combo 33/36 [128, 64, 32] sigmoid L1 0.7 | inner PCC 0.4722
+outer 7 | combo 34/36 [128, 64, 32] sigmoid MSE 0.1 | inner PCC 0.5088
+outer 7 | combo 35/36 [128, 64, 32] sigmoid MSE 0.3 | inner PCC 0.5216
+outer 7 | combo 36/36 [128, 64, 32] sigmoid MSE 0.7 | inner PCC 0.4878
+outer 7 | best ([128, 64, 32], 'relu', 'MSE', 0.7) | test PCC 0.6253 | test MSE 2.1202
+outer 8 | train 3752 (pos 938) | test 417 (pos 105)
+outer 8 | combo 1/36 [32, 16] relu L1 0.1 | inner PCC 0.5084
+outer 8 | combo 2/36 [32, 16] relu L1 0.3 | inner PCC 0.5189
+outer 8 | combo 3/36 [32, 16] relu L1 0.7 | inner PCC 0.5307
+outer 8 | combo 4/36 [32, 16] relu MSE 0.1 | inner PCC 0.5114
+outer 8 | combo 5/36 [32, 16] relu MSE 0.3 | inner PCC 0.5421
+outer 8 | combo 6/36 [32, 16] relu MSE 0.7 | inner PCC 0.5482
+outer 8 | combo 7/36 [32, 16] sigmoid L1 0.1 | inner PCC 0.4888
+outer 8 | combo 8/36 [32, 16] sigmoid L1 0.3 | inner PCC 0.4943
+outer 8 | combo 9/36 [32, 16] sigmoid L1 0.7 | inner PCC 0.4609
+outer 8 | combo 10/36 [32, 16] sigmoid MSE 0.1 | inner PCC 0.5155
+outer 8 | combo 11/36 [32, 16] sigmoid MSE 0.3 | inner PCC 0.5032
+outer 8 | combo 12/36 [32, 16] sigmoid MSE 0.7 | inner PCC 0.4620
+outer 8 | combo 13/36 [32, 16, 16] relu L1 0.1 | inner PCC 0.4990
+outer 8 | combo 14/36 [32, 16, 16] relu L1 0.3 | inner PCC 0.5035
+outer 8 | combo 15/36 [32, 16, 16] relu L1 0.7 | inner PCC 0.5173
+outer 8 | combo 16/36 [32, 16, 16] relu MSE 0.1 | inner PCC 0.5079
+outer 8 | combo 17/36 [32, 16, 16] relu MSE 0.3 | inner PCC 0.5420
+outer 8 | combo 18/36 [32, 16, 16] relu MSE 0.7 | inner PCC 0.5234
+outer 8 | combo 19/36 [32, 16, 16] sigmoid L1 0.1 | inner PCC 0.4809
+outer 8 | combo 20/36 [32, 16, 16] sigmoid L1 0.3 | inner PCC 0.4756
+outer 8 | combo 21/36 [32, 16, 16] sigmoid L1 0.7 | inner PCC 0.4289
+outer 8 | combo 22/36 [32, 16, 16] sigmoid MSE 0.1 | inner PCC 0.4856
+outer 8 | combo 23/36 [32, 16, 16] sigmoid MSE 0.3 | inner PCC 0.5149
+outer 8 | combo 24/36 [32, 16, 16] sigmoid MSE 0.7 | inner PCC 0.4672
+outer 8 | combo 25/36 [128, 64, 32] relu L1 0.1 | inner PCC 0.5029
+outer 8 | combo 26/36 [128, 64, 32] relu L1 0.3 | inner PCC 0.5070
+outer 8 | combo 27/36 [128, 64, 32] relu L1 0.7 | inner PCC 0.5260
+outer 8 | combo 28/36 [128, 64, 32] relu MSE 0.1 | inner PCC 0.5152
+outer 8 | combo 29/36 [128, 64, 32] relu MSE 0.3 | inner PCC 0.5465
+outer 8 | combo 30/36 [128, 64, 32] relu MSE 0.7 | inner PCC 0.5596
+outer 8 | combo 31/36 [128, 64, 32] sigmoid L1 0.1 | inner PCC 0.5018
+outer 8 | combo 32/36 [128, 64, 32] sigmoid L1 0.3 | inner PCC 0.5134
+outer 8 | combo 33/36 [128, 64, 32] sigmoid L1 0.7 | inner PCC 0.4711
+outer 8 | combo 34/36 [128, 64, 32] sigmoid MSE 0.1 | inner PCC 0.5063
+outer 8 | combo 35/36 [128, 64, 32] sigmoid MSE 0.3 | inner PCC 0.5230
+outer 8 | combo 36/36 [128, 64, 32] sigmoid MSE 0.7 | inner PCC 0.4851
+outer 8 | best ([128, 64, 32], 'relu', 'MSE', 0.7) | test PCC 0.6856 | test MSE 1.4644
+outer 9 | train 3752 (pos 938) | test 417 (pos 105)
+outer 9 | combo 1/36 [32, 16] relu L1 0.1 | inner PCC 0.5229
+outer 9 | combo 2/36 [32, 16] relu L1 0.3 | inner PCC 0.5155
+outer 9 | combo 3/36 [32, 16] relu L1 0.7 | inner PCC 0.5274
+outer 9 | combo 4/36 [32, 16] relu MSE 0.1 | inner PCC 0.5269
+outer 9 | combo 5/36 [32, 16] relu MSE 0.3 | inner PCC 0.5578
+outer 9 | combo 6/36 [32, 16] relu MSE 0.7 | inner PCC 0.5307
+outer 9 | combo 7/36 [32, 16] sigmoid L1 0.1 | inner PCC 0.5153
+outer 9 | combo 8/36 [32, 16] sigmoid L1 0.3 | inner PCC 0.5080
+outer 9 | combo 9/36 [32, 16] sigmoid L1 0.7 | inner PCC 0.4600
+outer 9 | combo 10/36 [32, 16] sigmoid MSE 0.1 | inner PCC 0.5348
+outer 9 | combo 11/36 [32, 16] sigmoid MSE 0.3 | inner PCC 0.5005
+outer 9 | combo 12/36 [32, 16] sigmoid MSE 0.7 | inner PCC 0.4748
+outer 9 | combo 13/36 [32, 16, 16] relu L1 0.1 | inner PCC 0.5295
+outer 9 | combo 14/36 [32, 16, 16] relu L1 0.3 | inner PCC 0.5181
+outer 9 | combo 15/36 [32, 16, 16] relu L1 0.7 | inner PCC 0.5208
+outer 9 | combo 16/36 [32, 16, 16] relu MSE 0.1 | inner PCC 0.5262
+outer 9 | combo 17/36 [32, 16, 16] relu MSE 0.3 | inner PCC 0.5337
+outer 9 | combo 18/36 [32, 16, 16] relu MSE 0.7 | inner PCC 0.5354
+outer 9 | combo 19/36 [32, 16, 16] sigmoid L1 0.1 | inner PCC 0.4936
+outer 9 | combo 20/36 [32, 16, 16] sigmoid L1 0.3 | inner PCC 0.4864
+outer 9 | combo 21/36 [32, 16, 16] sigmoid L1 0.7 | inner PCC 0.4386
+outer 9 | combo 22/36 [32, 16, 16] sigmoid MSE 0.1 | inner PCC 0.5043
+outer 9 | combo 23/36 [32, 16, 16] sigmoid MSE 0.3 | inner PCC 0.5092
+outer 9 | combo 24/36 [32, 16, 16] sigmoid MSE 0.7 | inner PCC 0.4800
+outer 9 | combo 25/36 [128, 64, 32] relu L1 0.1 | inner PCC 0.5280
+outer 9 | combo 26/36 [128, 64, 32] relu L1 0.3 | inner PCC 0.5422
+outer 9 | combo 27/36 [128, 64, 32] relu L1 0.7 | inner PCC 0.5275
+outer 9 | combo 28/36 [128, 64, 32] relu MSE 0.1 | inner PCC 0.5320
+outer 9 | combo 29/36 [128, 64, 32] relu MSE 0.3 | inner PCC 0.5616
+outer 9 | combo 30/36 [128, 64, 32] relu MSE 0.7 | inner PCC 0.5713
+outer 9 | combo 31/36 [128, 64, 32] sigmoid L1 0.1 | inner PCC 0.5335
+outer 9 | combo 32/36 [128, 64, 32] sigmoid L1 0.3 | inner PCC 0.5472
+outer 9 | combo 33/36 [128, 64, 32] sigmoid L1 0.7 | inner PCC 0.4769
+outer 9 | combo 34/36 [128, 64, 32] sigmoid MSE 0.1 | inner PCC 0.5331
+outer 9 | combo 35/36 [128, 64, 32] sigmoid MSE 0.3 | inner PCC 0.5366
+outer 9 | combo 36/36 [128, 64, 32] sigmoid MSE 0.7 | inner PCC 0.5087
+outer 9 | best ([128, 64, 32], 'relu', 'MSE', 0.7) | test PCC 0.5964 | test MSE 2.6693
+outer 10 | train 3753 (pos 939) | test 416 (pos 104)
+outer 10 | combo 1/36 [32, 16] relu L1 0.1 | inner PCC 0.4958
+outer 10 | combo 2/36 [32, 16] relu L1 0.3 | inner PCC 0.5022
+outer 10 | combo 3/36 [32, 16] relu L1 0.7 | inner PCC 0.5228
+outer 10 | combo 4/36 [32, 16] relu MSE 0.1 | inner PCC 0.5356
+outer 10 | combo 5/36 [32, 16] relu MSE 0.3 | inner PCC 0.5558
+outer 10 | combo 6/36 [32, 16] relu MSE 0.7 | inner PCC 0.5494
+outer 10 | combo 7/36 [32, 16] sigmoid L1 0.1 | inner PCC 0.4955
+outer 10 | combo 8/36 [32, 16] sigmoid L1 0.3 | inner PCC 0.5029
+outer 10 | combo 9/36 [32, 16] sigmoid L1 0.7 | inner PCC 0.4721
+outer 10 | combo 10/36 [32, 16] sigmoid MSE 0.1 | inner PCC 0.4959
+outer 10 | combo 11/36 [32, 16] sigmoid MSE 0.3 | inner PCC 0.4919
+outer 10 | combo 12/36 [32, 16] sigmoid MSE 0.7 | inner PCC 0.4722
+outer 10 | combo 13/36 [32, 16, 16] relu L1 0.1 | inner PCC 0.4915
+outer 10 | combo 14/36 [32, 16, 16] relu L1 0.3 | inner PCC 0.5109
+outer 10 | combo 15/36 [32, 16, 16] relu L1 0.7 | inner PCC 0.5196
+outer 10 | combo 16/36 [32, 16, 16] relu MSE 0.1 | inner PCC 0.5156
+outer 10 | combo 17/36 [32, 16, 16] relu MSE 0.3 | inner PCC 0.5425
+outer 10 | combo 18/36 [32, 16, 16] relu MSE 0.7 | inner PCC 0.5302
+outer 10 | combo 19/36 [32, 16, 16] sigmoid L1 0.1 | inner PCC 0.4752
+outer 10 | combo 20/36 [32, 16, 16] sigmoid L1 0.3 | inner PCC 0.4863
+outer 10 | combo 21/36 [32, 16, 16] sigmoid L1 0.7 | inner PCC 0.4331
+outer 10 | combo 22/36 [32, 16, 16] sigmoid MSE 0.1 | inner PCC 0.4704
+outer 10 | combo 23/36 [32, 16, 16] sigmoid MSE 0.3 | inner PCC 0.4737
+outer 10 | combo 24/36 [32, 16, 16] sigmoid MSE 0.7 | inner PCC 0.4597
+outer 10 | combo 25/36 [128, 64, 32] relu L1 0.1 | inner PCC 0.4965
+outer 10 | combo 26/36 [128, 64, 32] relu L1 0.3 | inner PCC 0.5123
+outer 10 | combo 27/36 [128, 64, 32] relu L1 0.7 | inner PCC 0.5298
+outer 10 | combo 28/36 [128, 64, 32] relu MSE 0.1 | inner PCC 0.5259
+outer 10 | combo 29/36 [128, 64, 32] relu MSE 0.3 | inner PCC 0.5408
+outer 10 | combo 30/36 [128, 64, 32] relu MSE 0.7 | inner PCC 0.5657
+outer 10 | combo 31/36 [128, 64, 32] sigmoid L1 0.1 | inner PCC 0.4912
+outer 10 | combo 32/36 [128, 64, 32] sigmoid L1 0.3 | inner PCC 0.5007
+outer 10 | combo 33/36 [128, 64, 32] sigmoid L1 0.7 | inner PCC 0.4747
+outer 10 | combo 34/36 [128, 64, 32] sigmoid MSE 0.1 | inner PCC 0.5214
+outer 10 | combo 35/36 [128, 64, 32] sigmoid MSE 0.3 | inner PCC 0.4567
+outer 10 | combo 36/36 [128, 64, 32] sigmoid MSE 0.7 | inner PCC 0.4643
+outer 10 | best ([128, 64, 32], 'relu', 'MSE', 0.7) | test PCC 0.5789 | test MSE 2.4076
+Overall PCC (pooled): 0.5650
+Overall MSE (pooled): 2.1103
+Mean test PCC over folds: 0.5682 +/- 0.0575
