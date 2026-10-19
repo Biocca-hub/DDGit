@@ -3,8 +3,11 @@ combo 1/5 [32, 16, 16] relu L1 0.3 | overall PCC 0.3931 | MSE 2.6702 | RMSE 1.63
 combo 2/5 [32, 16, 16] sigmoid MSE 0.1 | overall PCC 0.3785 | MSE 2.7281 | RMSE 1.6517
 combo 3/5 [32, 16, 16] relu MSE 0.7 | overall PCC 0.4413 | MSE 2.5241 | RMSE 1.5887
 combo 4/5 [128, 64, 32] relu MSE 0.1 | overall PCC 0.4132 | MSE 2.6465 | RMSE 1.6268
-MSE 0.5 | inner PCC 0.1868
-outer 0 | combo 8/96 [16] relu MSE 0.7 | inner PCC 0.1840
+combo 5/5 [32, 16] relu L1 0.3 | overall PCC 0.4241 | MSE 2.5775 | RMSE 1.6055
+.1840
 outer 0 | combo 9/96 [16] sigmoid L1 0.1 | inner PCC 0.2144
 outer 0 | combo 10/96 [16] sigmoid L1 0.3 | inner PCC 0.2190
 outer 0 | combo 11/96 [16] sigmoid L1 0.5 | inner PCC 0.2136
+outer 0 | combo 12/96 [16] sigmoid L1 0.7 | inner PCC 0.2381
+outer 0 | combo 13/96 [16] sigmoid MSE 0.1 | inner PCC 0.1930
+outer 0 | combo 14/96 [16] sigmoid MSE 0.3 | inner PCC 0.1832
