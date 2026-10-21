@@ -18,3 +18,4 @@ outer 0 | combo 18/96 [128] relu L1 0.3 | inner PCC 0.2205
 outer 0 | combo 19/96 [128] relu L1 0.5 | inner PCC 0.1903
 outer 0 | combo 20/96 [128] relu L1 0.7 | inner PCC 0.2238
 outer 0 | combo 21/96 [128] relu MSE 0.1 | inner PCC 0.1850
+outer 0 | combo 22/96 [128] relu MSE 0.3 | inner PCC 0.1852
