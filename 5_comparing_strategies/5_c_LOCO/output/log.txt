@@ -36,3 +36,4 @@ outer 0 | combo 36/96 [32, 16] relu L1 0.7 | inner PCC 0.2123
 outer 0 | combo 37/96 [32, 16] relu MSE 0.1 | inner PCC 0.1674
 outer 0 | combo 38/96 [32, 16] relu MSE 0.3 | inner PCC 0.1775
 outer 0 | combo 39/96 [32, 16] relu MSE 0.5 | inner PCC 0.2046
+outer 0 | combo 40/96 [32, 16] relu MSE 0.7 | inner PCC 0.2067

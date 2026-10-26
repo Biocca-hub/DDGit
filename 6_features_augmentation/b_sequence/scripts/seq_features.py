@@ -75,19 +75,3 @@ for i, row in sdf.iterrows():
 print(f'\nOK: {ok} / {len(sdf)}')
 print(f'Fuori range: {len(out_of_range)}  -> chain: {sdf.loc[out_of_range, "chain"].unique()}')
 print(f'Mismatch: {len(mismatch)}  -> chain: {sdf.loc[mismatch, "chain"].unique()}')
-'''
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['font.serif'] = ['Cambria Math'] + plt.rcParams['font.serif']
-# Create a larger figure with higher resolution
-plt.figure(figsize=(40, 20), dpi=350) # Increased figsize and dpi for better quality
-
-sns.barplot(data=df_sorted, x='chain', y='seq_len', color = 'royalblue')
-sns.despine()
-plt.title('Sequence Length Distribution\n', fontsize = 40) # Increased title fontsize
-plt.xlabel('\nChain', fontsize = 30) # Increased x-label fontsize
-plt.ylabel('Length\n', fontsize = 30) # Increased y-label fontsize
-plt.xticks(fontsize = 5, rotation = 90) # Increased x-axis tick label fontsize
-plt.yticks(fontsize=25) # Increased y-axis tick label fontsize
-#plt.show()
-plt.savefig('length_distribution.png', format = 'png')
-'''
