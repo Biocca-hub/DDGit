@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 aa_list = list("GAVPLIMFWYSTCNQHDEKR")
 
-df = pd.read_csv('../output/aa_features.tsv', sep='\t')
+df = pd.read_csv('../output/normalized_aa_features.tsv', sep='\t')
 
 # colonne delta -> (titolo, unità, formato e dimensione delle etichette)
 deltas = {
