@@ -15,7 +15,7 @@ df = pd.read_csv('../output/ddgit_dataset.tsv', sep = '\t')
 'inner_5', 'inner_6', 'inner_7', 'inner_8', 'inner_9', 'inner_10']
 '''
 
-def phy_chem_surroundings(df, pdb_folder, ray):
+def phy_chem_surroundings(df, pdb_folder, radius):
     
     aa_3_1 = {'ALA': 'A', 'ARG': 'R', 'ASN': 'N', 'ASP': 'D', 'CYS': 'C', 
             'GLU': 'E', 'GLN': 'Q', 'GLY': 'G', 'HIS': 'H', 'ILE': 'I', 
@@ -95,7 +95,7 @@ def phy_chem_surroundings(df, pdb_folder, ray):
                     za = float(line[46:54])
                     d = ((xa - xr)**2 + (ya - yr)**2 + (za - zr)**2)**0.5
 
-                    if d <= ray: # complex
+                    if d <= radius: # complex
 
                         # MWs 
                         c_mw.append(ProteinAnalysis(aa_3_1.get(res)).molecular_weight())
