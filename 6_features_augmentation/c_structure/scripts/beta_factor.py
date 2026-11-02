@@ -1,5 +1,5 @@
-import pandas as pd 
-import numpy as np 
+import pandas as pd
+import numpy as np
 
 df = pd.read_csv('../output/ddgit_dataset.tsv', sep = '\t')
 
@@ -12,10 +12,10 @@ df = pd.read_csv('../output/ddgit_dataset.tsv', sep = '\t')
 '''
 
 def B_factor(df, pdb_folder, radius):
-    
-    aa_3_1 = {'ALA': 'A', 'ARG': 'R', 'ASN': 'N', 'ASP': 'D', 'CYS': 'C', 
-            'GLU': 'E', 'GLN': 'Q', 'GLY': 'G', 'HIS': 'H', 'ILE': 'I', 
-            'LEU': 'L', 'LYS': 'K', 'MET': 'M', 'PHE': 'F', 'PRO': 'P', 
+
+    aa_3_1 = {'ALA': 'A', 'ARG': 'R', 'ASN': 'N', 'ASP': 'D', 'CYS': 'C',
+            'GLU': 'E', 'GLN': 'Q', 'GLY': 'G', 'HIS': 'H', 'ILE': 'I',
+            'LEU': 'L', 'LYS': 'K', 'MET': 'M', 'PHE': 'F', 'PRO': 'P',
             'SER': 'S', 'THR': 'T', 'TRP': 'W', 'TYR': 'Y', 'VAL': 'V'}
 
     b_factor = []
@@ -26,16 +26,27 @@ def B_factor(df, pdb_folder, radius):
 
     b_avg = []
 
+    # B-factor normalizzati (z-score sulla struttura) e metodo sperimentale
+    b_factor_z = []
+    c_b_z = []
+    m_b_z = []
+    methods = []
+
     for i in range(df.shape[0]):
         # if df.unique[i].split('_')[0] == df.pdb[i] and df.unique[i].split('_')[1] == df.chain_id[i] and df.unique[i].split('_')[2][2:-1] == df.pdb_pos[i]:
         file = f'{pdb_folder}{df.pdb[i]}.pdb'
         c_id = df.chain_id[i]
         pos = str(df.pdb_pos[i]).upper()
         wt = df.wt[i]
+
         # hits = []
         found = False
+        method = ''     # NUOVO
         with open(file, 'r') as structure:
             for line in structure:
+                # metodo sperimentale (X-RAY DIFFRACTION, SOLUTION NMR, ELECTRON MICROSCOPY, ...)
+                if line.startswith('EXPDTA'):
+                    method = line[10:].strip()
                 if line.startswith('ENDMDL'): # fine del primo modello NMR, tiene questo come buono
                     break
                 if not line.startswith('ATOM'):
@@ -45,9 +56,11 @@ def B_factor(df, pdb_folder, radius):
                 pdb_res = res_num + (icode if icode else "")
                 res = line[17:20]
                 if (line[12:16].strip() == 'CA' and line[21] == c_id and pdb_res == pos and aa_3_1.get(res) == wt):
-                    
-                    b_factor.append(float(line[61:66]))
-                    
+
+                    # MODIFICATO: [60:66] invece di [61:66]. Il B-factor occupa le colonne 61-66 del formato PDB,
+                    # cioè gli indici Python 60:66. Con [61:66] un valore come 100.00 veniva letto come 00.00
+                    b_factor.append(float(line[60:66]))
+
                     found = True
                     xr = float(line[30:38])
                     yr = float(line[38:46])
@@ -56,6 +69,13 @@ def B_factor(df, pdb_folder, radius):
                     break # tiene prima posizione come buona
         if not found:
             print(df.unique[i], df.pdb[i], df.chain_id[i], df.pdb_pos[i], df.wt[i])                              # basta il primo CA, ignora altloc B
+            # se il residuo non è trovato, xr/yr/zr sarebbero quelli della riga precedente
+            # (intorno sbagliato senza errori). Metto NaN per questa riga e passo alla successiva,
+            # così tutte le liste restano lunghe quanto df
+            for l in (b_factor, c_b_avg, m_b_avg, b_avg, b_factor_z, c_b_z, m_b_z):
+                l.append(np.nan)
+            methods.append(method)
+            continue
 
         with open(file, 'r') as structure:
 
@@ -67,7 +87,7 @@ def B_factor(df, pdb_folder, radius):
 
             m_b = []
 
-            # whole 
+            # whole
 
             b = []
 
@@ -75,35 +95,52 @@ def B_factor(df, pdb_folder, radius):
                 if line.startswith('ENDMDL'): # fine del primo modello NMR, tiene questo come buono
                     break
                 if not line.startswith('ATOM'):
-                    continue    
+                    continue
                 res_num = line[22:26].strip()
                 icode = line[26].strip()
                 pdb_res = res_num + (icode if icode else "")
-                res = line[17:20] 
+                res = line[17:20]
                 if line[12:16].strip() == 'CA' and line[16] in (' ', 'A') and res in aa_3_1: #and pdb_res != pos:
                     xa = float(line[30:38])
                     ya = float(line[38:46])
                     za = float(line[46:54])
                     d = ((xa - xr)**2 + (ya - yr)**2 + (za - zr)**2)**0.5
 
-                    if d <= radius: # complex
+                    if d <= radius: # and line[21] in complex_chains: # complex
 
-                        # MWs 
-                        c_b.append(float(line[61:66]))
+                        # B-factor 
+                        c_b.append(float(line[60:66]))
 
                         if line[21] == c_id: # monomer
-                                
-                            # MWs 
-                            m_b.append(float(line[61:66]))
+                            # per usare tutto il partner che contiene la mutazione (es. anticorpo H+L)
+                            # invece della sola catena: line[21] in (set(p1) if c_id in p1 else set(p2))
 
-                    b.append(float(line[61:66]))
+                            # B-factor   (MODIFICATO: [60:66], vedi sopra)
+                            m_b.append(float(line[60:66]))
+
+                    # whole: tutti i CA della struttura (primo modello), serve per la normalizzazione
+                    b.append(float(line[60:66]))   # MODIFICATO: [60:66], vedi sopra
 
         c_b_avg.append(sum(c_b)/len(c_b))
 
         m_b_avg.append(sum(m_b)/len(m_b))
 
-        b_avg.append(sum(b)/len(b)) 
- 
+        b_avg.append(sum(b)/len(b))
+
+        # z-score rispetto a tutti i CA della struttura, così i valori sono confrontabili
+        # tra PDB diversi (risoluzione, raffinamento, ...). Se sd == 0 (NMR con B-factor tutti
+        # uguali, es. 2KSO = 0.00, 1KBH = 10.00) il B-factor non ha significato -> NaN
+        mu, sd = np.mean(b), np.std(b)
+        if sd > 0:
+            b_factor_z.append((b_factor[-1] - mu) / sd)
+            c_b_z.append((c_b_avg[-1] - mu) / sd)
+            m_b_z.append((m_b_avg[-1] - mu) / sd)
+        else:
+            b_factor_z.append(np.nan)
+            c_b_z.append(np.nan)
+            m_b_z.append(np.nan)
+        methods.append(method)
+
         # if len(hits) > 1:
             # print(df.unique[i], len(hits))
             # for h in hits:
@@ -115,9 +152,14 @@ def B_factor(df, pdb_folder, radius):
                 'monomer_B_factor': m_b_avg,
                 'whole_B_factor': b_avg,
                 'position_B_factor': b_factor,
+                # NUOVO: colonne normalizzate (da usare come feature) e metodo sperimentale
+                'complex_B_factor_z': c_b_z,
+                'monomer_B_factor_z': m_b_z,
+                'position_B_factor_z': b_factor_z,
+                'method': methods,
                 })
 
-    return df_surr 
+    return df_surr
 
 df_12 = B_factor(df, '../input/PDBs/', 12)
 
