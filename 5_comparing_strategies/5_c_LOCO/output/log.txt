@@ -48,3 +48,12 @@ outer 0 | combo 48/96 [32, 16] sigmoid MSE 0.7 | inner PCC 0.2011
 outer 0 | combo 49/96 [128, 32] relu L1 0.1 | inner PCC 0.2032
 outer 0 | combo 50/96 [128, 32] relu L1 0.3 | inner PCC 0.2138
 outer 0 | combo 51/96 [128, 32] relu L1 0.5 | inner PCC 0.1972
+outer 0 | combo 52/96 [128, 32] relu L1 0.7 | inner PCC 0.1902
+outer 0 | combo 53/96 [128, 32] relu MSE 0.1 | inner PCC 0.1958
+outer 0 | combo 54/96 [128, 32] relu MSE 0.3 | inner PCC 0.1944
+outer 0 | combo 55/96 [128, 32] relu MSE 0.5 | inner PCC 0.2050
+outer 0 | combo 56/96 [128, 32] relu MSE 0.7 | inner PCC 0.2079
+outer 0 | combo 57/96 [128, 32] sigmoid L1 0.1 | inner PCC 0.2055
+outer 0 | combo 58/96 [128, 32] sigmoid L1 0.3 | inner PCC 0.2390
+outer 0 | combo 59/96 [128, 32] sigmoid L1 0.5 | inner PCC 0.2169
+outer 0 | combo 60/96 [128, 32] sigmoid L1 0.7 | inner PCC 0.2269
