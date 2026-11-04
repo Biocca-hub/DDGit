@@ -1,0 +1,33 @@
+https://www.ebi.ac.uk/pdbe/api/v2/mappings/all_isoforms/1BD2
+
+
+{ Dizionario, 1 chiave == pdb id 
+  "1bd2": { Dizionario, 1 chiave == UniProt
+    "UniProt": { Dizionario, 1 chiave == UniProt ID
+      "P04439": { Dizionario, 2 chiavi: name == gene name, mappings
+        "name": "HLAA_HUMAN",
+        "mappings": [ porta a una lista che contiene dizionari
+          { dizionario nella lista: chiave chain_id da la catena
+            "entity_id": 1,
+            "chain_id": "A",
+            "struct_asym_id": "A",
+            "unp_start": 25, dove sequenza uniprot inizia nel pdb 
+            "unp_end": 299, dove sequenza uniprot finisce nel pdb
+            "pdb_start": 1, inizio catena pdb
+            "pdb_end": 275, fine catena pdb
+            "start": {
+              "author_residue_number": 1,
+              "author_insertion_code": "",
+              "residue_number": 1
+            },
+            "end": {
+              "author_residue_number": 275,
+              "author_insertion_code": "",
+              "residue_number": 275
+            },
+            "identity": 0.93,
+            "is_canonical": true
+          }
+        ],
+        "identifier": "HLAA_HUMAN"
+      },
