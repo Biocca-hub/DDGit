@@ -1,0 +1,6 @@
+best_combo	pcc	architecture	activation	loss	dropout	out
+70	0.2792096771299839	[32, 16, 16]	relu	MSE	0.5	1
+11	0.35659148544073105	[16]	sigmoid	L1	0.7	2
+11	0.2995465211570263	[16]	sigmoid	L1	0.7	3
+11	0.33008357882499695	[16]	sigmoid	L1	0.7	4
+11	0.3280933201313019	[16]	sigmoid	L1	0.7	5
