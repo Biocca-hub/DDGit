@@ -1,0 +1,7 @@
+	clustering	combo	architecture	activation	loss	dropout
+0	ddgit	71	[32, 16, 16]	relu	MSE	0.7
+1	ddgit	12	[16]	sigmoid	MSE	0.1
+2	ddgit	67	[32, 16, 16]	relu	L1	0.7
+3	ddgit	9	[16]	sigmoid	L1	0.3
+4	stratified	23	[128]	relu	MSE	0.7
+5	stratified	22	[128]	relu	MSE	0.5

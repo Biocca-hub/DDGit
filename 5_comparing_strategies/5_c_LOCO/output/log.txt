@@ -69,3 +69,10 @@ outer 0 | combo 69/96 [32, 16, 16] relu MSE 0.1 | inner PCC 0.2004
 outer 0 | combo 70/96 [32, 16, 16] relu MSE 0.3 | inner PCC 0.2000
 outer 0 | combo 71/96 [32, 16, 16] relu MSE 0.5 | inner PCC 0.2192
 outer 0 | combo 72/96 [32, 16, 16] relu MSE 0.7 | inner PCC 0.2166
+outer 0 | combo 73/96 [32, 16, 16] sigmoid L1 0.1 | inner PCC 0.2196
+outer 0 | combo 74/96 [32, 16, 16] sigmoid L1 0.3 | inner PCC 0.2439
+outer 0 | combo 75/96 [32, 16, 16] sigmoid L1 0.5 | inner PCC 0.2199
+outer 0 | combo 76/96 [32, 16, 16] sigmoid L1 0.7 | inner PCC 0.2329
+outer 0 | combo 77/96 [32, 16, 16] sigmoid MSE 0.1 | inner PCC 0.2039
+outer 0 | combo 78/96 [32, 16, 16] sigmoid MSE 0.3 | inner PCC 0.1928
+outer 0 | combo 79/96 [32, 16, 16] sigmoid MSE 0.5 | inner PCC 0.2071
