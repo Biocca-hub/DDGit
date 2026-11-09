@@ -1,9 +1,25 @@
 import pandas as pd 
 import numpy as np 
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
-from quantiprot.metrics.aaindex import get_aa2volume
+# from quantiprot.metrics.aaindex import get_aa2volume
 
-aa2vol = get_aa2volume()
+# aa2vol = get_aa2volume()
+
+# Punto isoelettrico (pH) — valori standard per l'amminoacido libero (Lehninger)
+aa_pI = {
+    "A": 6.00, "R": 10.76, "N": 5.41, "D": 2.77, "C": 5.07,
+    "E": 3.22, "Q": 5.65,  "G": 5.97, "H": 7.59, "I": 6.02,
+    "L": 5.98, "K": 9.74,  "M": 5.74, "F": 5.48, "P": 6.30,
+    "S": 5.68, "T": 5.60,  "W": 5.89, "Y": 5.66, "V": 5.96,
+}
+
+# Volume del residuo (Å³) — Zamyatnin 1972 (AAindex ZAMY720101)
+aa_volume = {
+    "A": 88.6,  "R": 173.4, "N": 114.1, "D": 111.1, "C": 108.5,
+    "E": 138.4, "Q": 143.8, "G": 60.1,  "H": 153.2, "I": 166.7,
+    "L": 166.7, "K": 168.6, "M": 162.9, "F": 189.9, "P": 112.7,
+    "S": 89.0,  "T": 116.1, "W": 227.8, "Y": 193.6, "V": 140.0,
+}
 
 df = pd.read_csv('../output/ddgit_dataset.tsv', sep = '\t')
 
@@ -100,11 +116,11 @@ def phy_chem_surroundings(df, pdb_folder, radius):
                         # MWs 
                         c_mw.append(ProteinAnalysis(aa_3_1.get(res)).molecular_weight())
                         # Volumes 
-                        c_vol.append(aa2vol.mapping[aa_3_1.get(res)])
+                        c_vol.append(aa_volume[aa_3_1.get(res)])
                         # Aromaticity 
                         c_aro.append(ProteinAnalysis(aa_3_1.get(res)).aromaticity())
                         # Isoelectric point  
-                        c_iso.append(ProteinAnalysis(aa_3_1.get(res)).isoelectric_point())
+                        c_iso.append(aa_pI[aa_3_1.get(res)])
                         # Hidropathy
                         c_hidro.append(ProteinAnalysis(aa_3_1.get(res)).gravy())
 
@@ -113,11 +129,11 @@ def phy_chem_surroundings(df, pdb_folder, radius):
                             # MWs 
                             m_mw.append(ProteinAnalysis(aa_3_1.get(res)).molecular_weight())
                             # Volumes 
-                            m_vol.append(aa2vol.mapping[aa_3_1.get(res)])
+                            m_vol.append(aa_volume[aa_3_1.get(res)])
                             # Aromaticity 
                             m_aro.append(ProteinAnalysis(aa_3_1.get(res)).aromaticity())
                             # Isoelectric point  
-                            m_iso.append(ProteinAnalysis(aa_3_1.get(res)).isoelectric_point())
+                            m_iso.append(aa_pI[aa_3_1.get(res)])
                             # Hidropathy
                             m_hidro.append(ProteinAnalysis(aa_3_1.get(res)).gravy())
 
@@ -154,23 +170,23 @@ def phy_chem_surroundings(df, pdb_folder, radius):
 
     return df_surr 
 
-#df_12 = phy_chem_surroundings(df, '../input/PDBs/', 12)
+df_12 = phy_chem_surroundings(df, '../input/PDBs/', 12)
 
-#df_12.to_csv('../output/surr_12.tsv', sep = '\t', index=False)
+df_12.to_csv('../output/up_surr_12.tsv', sep = '\t', index=False)
 
-#df_6 = phy_chem_surroundings(df, '../input/PDBs/', 6)
+df_6 = phy_chem_surroundings(df, '../input/PDBs/', 6)
 
-#df_6.to_csv('../output/surr_6.tsv', sep = '\t', index=False)
+df_6.to_csv('../output/up_surr_6.tsv', sep = '\t', index=False)
 
 df_8 = phy_chem_surroundings(df, '../input/PDBs/', 8)
 
-df_8.to_csv('../output/surr_8.tsv', sep = '\t', index=False)
+df_8.to_csv('../output/up_surr_8.tsv', sep = '\t', index=False)
 
 df_10 = phy_chem_surroundings(df, '../input/PDBs/', 10)
 
-df_10.to_csv('../output/surr_10.tsv', sep = '\t', index=False)
+df_10.to_csv('../output/up_surr_10.tsv', sep = '\t', index=False)
 
 df_4 = phy_chem_surroundings(df, '../input/PDBs/', 4)
 
-df_4.to_csv('../output/surr_4.tsv', sep = '\t', index=False)
+df_4.to_csv('../output/up_surr_4.tsv', sep = '\t', index=False)
 

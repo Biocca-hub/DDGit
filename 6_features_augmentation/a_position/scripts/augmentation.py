@@ -1,13 +1,13 @@
 import pandas as pd
 import torch
 
-features = pd.read_csv('../output/normalized_aa_features.tsv', sep='\t')
+features = pd.read_csv('../output/normalized_update_features.tsv', sep='\t')
 
-n_features = ['n_wt_mw', 'n_mut_mw', #'n_delta_mw',
-              'n_wt_v', 'n_mut_v', #'n_delta_v',
-              'n_wt_h', 'n_mut_h', #'n_delta_hidropathy',
-              'n_wt_i', 'n_mut_i', #'n_delta_iso_p',
-              'wt_a', 'mut_a'] #'delta_aromaticity']
+n_features = ['n_wt_mw', 'n_mut_mw', 'n_delta_mw',
+              'n_wt_v', 'n_mut_v', 'n_delta_v',
+              'n_wt_h', 'n_mut_h', 'n_delta_hidropathy',
+              'n_wt_i', 'n_mut_i', 'n_delta_iso_p',
+              'wt_a', 'mut_a', 'delta_aromaticity']
 
 X = torch.load('../input/features.pt')
 label = torch.load('../input/labels.pt')
@@ -22,4 +22,4 @@ new = torch.tensor(features[n_features].to_numpy(), dtype=X.dtype)
 X_aug = torch.cat([X, new], dim=1)
 
 print(X_aug.shape)   # atteso: (n, 77)
-torch.save(X_aug, '../output/wt_mut_features.pt')
+torch.save(X_aug, '../output/wt_mut_update_features.pt')

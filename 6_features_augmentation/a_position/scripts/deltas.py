@@ -2,9 +2,21 @@ import pandas as pd
 import numpy as np 
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
+# Punto isoelettrico (pH) — valori standard per l'amminoacido libero (Lehninger)
+aa_pI = {
+    "A": 6.00, "R": 10.76, "N": 5.41, "D": 2.77, "C": 5.07,
+    "E": 3.22, "Q": 5.65,  "G": 5.97, "H": 7.59, "I": 6.02,
+    "L": 5.98, "K": 9.74,  "M": 5.74, "F": 5.48, "P": 6.30,
+    "S": 5.68, "T": 5.60,  "W": 5.89, "Y": 5.66, "V": 5.96,
+}
 
-wt = ProteinAnalysis("G")
-mut = ProteinAnalysis("A")
+# Volume del residuo (Å³) — Zamyatnin 1972 (AAindex ZAMY720101)
+aa_volume = {
+    "A": 88.6,  "R": 173.4, "N": 114.1, "D": 111.1, "C": 108.5,
+    "E": 138.4, "Q": 143.8, "G": 60.1,  "H": 153.2, "I": 166.7,
+    "L": 166.7, "K": 168.6, "M": 162.9, "F": 189.9, "P": 112.7,
+    "S": 89.0,  "T": 116.1, "W": 227.8, "Y": 193.6, "V": 140.0,
+}
 
 df = pd.read_csv('../input/ddgit_dataset.tsv', sep = '\t')
 # print(df.columns)
@@ -28,6 +40,10 @@ wt_h = []
 mut_h = []
 delta_hidropathy = []
 
+wt_v = []
+mut_v = []
+delta_vol = []
+
 if len(wts) == len(muts):
     for i in range(len(muts)):
         # MWs and delta_mw
@@ -45,9 +61,18 @@ if len(wts) == len(muts):
         # delta_instabilityidx.append(ProteinAnalysis(muts[i]).instability_index() - ProteinAnalysis(wts[i]).instability_index()) only zeros
 
         # Isoelectric points and delta ip 
-        wt_i.append(ProteinAnalysis(wts[i]).isoelectric_point())
-        mut_i.append( ProteinAnalysis(muts[i]).isoelectric_point())
-        delta_iso.append(ProteinAnalysis(muts[i]).isoelectric_point() - ProteinAnalysis(wts[i]).isoelectric_point())
+        #wt_i.append(ProteinAnalysis(wts[i]).isoelectric_point())
+        #mut_i.append( ProteinAnalysis(muts[i]).isoelectric_point())
+        #delta_iso.append(ProteinAnalysis(muts[i]).isoelectric_point() - ProteinAnalysis(wts[i]).isoelectric_point())
+
+        wt_i.append(aa_pI[wts[i]])
+        mut_i.append( aa_pI[muts[i]])
+        delta_iso.append(aa_pI[muts[i]] - aa_pI[wts[i]])
+
+        # Volume 
+        wt_v.append(aa_volume[wts[i]])
+        mut_v.append(aa_volume[muts[i]])
+        delta_vol.append(aa_volume[muts[i]] - aa_volume[wts[i]])
 
         # delta_flexibility.append(ProteinAnalysis(muts[i]).flexibility() - ProteinAnalysis(wts[i]).flexibility()) uses window, to be used with sequence 
 
@@ -65,53 +90,11 @@ if len(wts) == len(muts):
 # https://bioinformatics.stackexchange.com/questions/16417/python-script-to-calculate-properties-of-amino-acids-and-storing-them-in-matrix
 # reference 
 # https://link.springer.com/article/10.1186/s12859-017-1751-4#Sec15 
-from quantiprot.metrics.aaindex import get_aa2volume
+# from quantiprot.metrics.aaindex import get_aa2volume
 
-aa2vol = get_aa2volume()      # una volta, fuori dal ciclo
+# aa2vol = get_aa2volume()      # una volta, fuori dal ciclo
 # print(aa2vol.mapping) 
 #       {'A': 1.0, 'C': 2.43, 'D': 2.78, 'E': 3.78, 'F': 5.89, 'G': 0.0, 'H': 4.66, ...
-
-wt_v = []
-mut_v = []
-delta_vol = []
-for wt, mut in zip(wts, muts):
-    wt_v.append(aa2vol.mapping[wt])
-    mut_v.append(aa2vol.mapping[mut])
-    delta_vol.append(aa2vol.mapping[mut] - aa2vol.mapping[wt])
-
-from sklearn.preprocessing import MinMaxScaler
-
-scaler = MinMaxScaler(feature_range = (-1, 1))
-
-def norm_list(l):
-    ''' input a list (l) of values, 
-        converts in np.array() to scale it (mean = 0, min = -1, max = 1)
-        returns list of normalized values'''
-    l = np.array(l).reshape(-1,1)
-    scaler.fit(l)
-    l = scaler.transform(l).flatten()
-    l = [float(i) for i in l]
-    return l 
-
-n_wt_mw = norm_list(wt_mw)
-n_mut_mw = norm_list(mut_mw)
-n_delta_mw = norm_list(delta_mw)
-
-n_wt_a = norm_list(wt_a)
-n_mut_a = norm_list(mut_a)
-n_delta_aromaticity = norm_list(delta_aromaticity)
-
-n_wt_i = norm_list(wt_i)
-n_mut_i = norm_list(mut_i)
-n_delta_iso = norm_list(delta_iso)
-
-n_wt_h = norm_list(wt_h)
-n_mut_h = norm_list(mut_h)
-n_delta_hidropathy = norm_list(delta_hidropathy)
-
-n_wt_v = norm_list(wt_v)
-n_mut_v = norm_list(mut_v)
-n_delta_vol = norm_list(delta_vol)
 
 aa_features = pd.DataFrame({'label': df.unique,
               'wt': df.wt,
@@ -121,41 +104,20 @@ aa_features = pd.DataFrame({'label': df.unique,
               'mut_mw': mut_mw,
               'delta_mw': delta_mw,
 
-              'n_wt_mw': n_wt_mw,
-              'n_mut_mw': n_mut_mw,
-              'n_delta_mw': n_delta_mw,
-
               'wt_v': wt_v,
               'mut_v': mut_v,
               'delta_v': delta_vol,
-
-              'n_wt_v': n_wt_v,
-              'n_mut_v': n_mut_v,
-              'n_delta_v': n_delta_vol,
               
               'wt_h': wt_h,
               'mut_h': mut_h,
               'delta_hidropathy': delta_hidropathy,
 
-              'n_wt_h': n_wt_h,
-              'n_mut_h': n_mut_h,
-              'n_delta_hidropathy': n_delta_hidropathy,
-
               'wt_i': wt_i,
               'mut_i': mut_i,
               'delta_iso_p': delta_iso,
 
-              'n_wt_i': n_wt_i,
-              'n_mut_i': n_mut_i,
-              'n_delta_iso_p': n_delta_iso,
-
               'wt_a': wt_a,
               'mut_a': mut_a,
-              'delta_aromaticity': delta_aromaticity,
+              'delta_aromaticity': delta_aromaticity})
 
-              'n_wt_a': n_wt_a,
-              'n_mut_a': n_mut_a,
-              'n_delta_aromaticity': n_delta_aromaticity
-              })
-
-aa_features.to_csv('../output/aa_features.tsv', sep = '\t', index = False)
+aa_features.to_csv('../output/aa_update_features.tsv', sep = '\t', index = False)

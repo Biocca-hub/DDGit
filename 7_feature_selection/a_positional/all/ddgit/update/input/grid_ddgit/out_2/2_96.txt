@@ -1,0 +1,5 @@
+outer_fold	combo	architecture	activation	loss	dropout	inner_fold	pcc	best_epoch
+2	96	[128, 64, 32]	sigmoid	MSE	0.7	1	0.4275553822517395	265
+2	96	[128, 64, 32]	sigmoid	MSE	0.7	3	0.42503637075424194	227
+2	96	[128, 64, 32]	sigmoid	MSE	0.7	4	0.3325376808643341	467
+2	96	[128, 64, 32]	sigmoid	MSE	0.7	5	0.2677035331726074	114
