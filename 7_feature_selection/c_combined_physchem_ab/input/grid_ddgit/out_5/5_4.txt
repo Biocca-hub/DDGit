@@ -1,0 +1,5 @@
+outer_fold	combo	architecture	activation	loss	dropout	inner_fold	pcc	best_epoch
+5	4	[16]	relu	L1	0.7	1	0.3388477563858032	617
+5	4	[16]	relu	L1	0.7	2	0.33580973744392395	490
+5	4	[16]	relu	L1	0.7	3	0.3843619227409363	595
+5	4	[16]	relu	L1	0.7	4	0.2383071780204773	549

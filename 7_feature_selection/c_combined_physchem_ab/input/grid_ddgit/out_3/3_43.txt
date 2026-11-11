@@ -1,0 +1,5 @@
+outer_fold	combo	architecture	activation	loss	dropout	inner_fold	pcc	best_epoch
+3	43	[32, 16]	sigmoid	L1	0.5	1	0.29327669739723206	2023
+3	43	[32, 16]	sigmoid	L1	0.5	2	0.4140825569629669	78
+3	43	[32, 16]	sigmoid	L1	0.5	4	0.2468111664056778	1048
+3	43	[32, 16]	sigmoid	L1	0.5	5	0.35965025424957275	387

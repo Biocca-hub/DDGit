@@ -1,0 +1,6 @@
+outer_fold	train_folds	best_combo	pcc	architecture	activation	loss	dropout
+1	2,3,4,5	5	0.3328837715089321	[16]	relu	MSE	0.1
+2	1,3,4,5	12	0.3687072619795799	[16]	sigmoid	L1	0.7
+3	1,2,4,5	84	0.35234444960951805	[128, 64, 32]	relu	L1	0.7
+4	1,2,3,5	88	0.36372656375169754	[128, 64, 32]	relu	MSE	0.7
+5	1,2,3,4	9	0.3510519042611122	[16]	sigmoid	L1	0.1
