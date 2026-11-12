@@ -14,11 +14,11 @@ file = 'pred_files.txt'
 files = []
 with open(file, 'r') as reader:
     for line in reader:
-        files.append(f'../input/pred_loco/{line.strip()}')
+        files.append(f'../input/pred_ddgit/{line.strip()}')
 
 dfs = [pd.read_csv(f, sep='\t') for f in files]
 df = pd.concat(dfs, ignore_index=True)
-df.to_csv('predictions.tsv', sep = '\t', index = False)
+df.to_csv('predictions_ddgit.tsv', sep = '\t', index = False)
 
 predictions = torch.tensor(df.prediction)
 targets = torch.tensor(df.target)
@@ -97,7 +97,7 @@ def single_scatter(ax, df, title):
     ax.set_ylabel("Prediction")
     ax.set_title(title)
 
-pred = pd.read_csv('predictions.tsv', sep='\t')
+pred = pd.read_csv('predictions_ddgit.tsv', sep='\t')
 
 fig, ax = plt.subplots(figsize=(8, 8))
 single_scatter(ax, pred, "Nested CV (5 fold)")
