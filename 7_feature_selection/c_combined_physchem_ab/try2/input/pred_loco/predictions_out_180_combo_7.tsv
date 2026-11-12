@@ -1,0 +1,4 @@
+prediction	target	label	out_fold
+-0.3866701	-0.025	3MZW_B_NB23A	180
+-0.44604385	-0.073	3MZW_B_NB23G	180
+-0.33901	0.145	3MZW_B_NB23T	180
