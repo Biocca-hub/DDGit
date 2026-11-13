@@ -9,7 +9,7 @@ colonne = ['unique', 'binding_site', 'pdb', 'chain', 'chain_id', 'wt', 'mut',
            'inner_5', 'inner_6', 'inner_7', 'inner_8', 'inner_9', 'inner_10',
            'uniprot', 'unp_pos', 'unp_wt']
 
-organised = pd.DataFrame({'unique': df.unique,
+forward = pd.DataFrame({'unique': df.unique,
                           'wt': df.wt,
                           'mut': df.mut,
                           'pdb': df.pdb,
@@ -21,7 +21,7 @@ organised = pd.DataFrame({'unique': df.unique,
                           'location': df.location,
                           'ddg': df.ddg})
 
-clustering = pd.DataFrame({'unique': df.unique,
+forward_splits = pd.DataFrame({'unique': df.unique,
                            'ddgit_cc': df.ddgit_cc,
                            'ddgit_fold': df.ddgit_fold,
                            'lobso_fold': df.lobso_cc,
@@ -38,3 +38,19 @@ clustering = pd.DataFrame({'unique': df.unique,
                            'inner_9': df.inner_9, 
                            'inner_10': df.inner_10
                            })
+
+ddg = df.ddg * -1 
+
+mut = df.wt 
+wt = df.mut
+
+fw_unique = list(df.unique)
+rev_unique = []
+for u in fw_unique:
+    chain_pos = u.split('_')[-1][1:-1]
+    res_mut = u.split('_')[-1][0]
+    res_wt = u.split('_')[-1][-1]
+    rev_unique.append(u.split('_')[0]+'_'+u.split('_')[1]+'_'+res_wt+chain_pos+res_mut)
+
+print(df.unp_wt.head(5))
+print(df.wt.head(5))

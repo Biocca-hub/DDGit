@@ -1,13 +1,13 @@
 import pandas as pd
 import itertools
 
-n_outer = 5
-n_combo = 96
+n_outer = 10
+n_combo = 16
 
 activations = ['relu', 'sigmoid']
-dpouts = [0.1, 0.3, 0.5, 0.7]
+dpouts = [0.5, 0.7]
 losses = ["L1", "MSE"]
-architectures = [[16], [128], [32, 16], [128, 32], [32, 16, 16], [128, 64, 32]]
+architectures = [[32, 16], [32, 16, 16]]
 
 # deve avere lo stesso ordine usato in training_grid_slurm.py
 combos = list(itertools.product(architectures, activations, losses, dpouts))
@@ -19,7 +19,7 @@ for outer in range(1, n_outer + 1):
     best_combo = None
 
     for combo in range(1, n_combo + 1):
-        file = f'../input/grid_ddgit/out_{outer}/{outer}_{combo}.txt'
+        file = f'../input/grid_stratified/out_{outer}/{outer}_{combo}.txt'
         df = pd.read_csv(file, sep='\t')
         pcc = df.pcc.mean()            # media sulle inner fold
         if pcc > best_pcc:
@@ -42,4 +42,4 @@ for outer in range(1, n_outer + 1):
 
 df = pd.DataFrame(rows)
 print(df)
-df.to_csv('ddgit_grid_results.tsv', sep='\t', index=False)
+df.to_csv('stratified_grid_results.tsv', sep='\t', index=False)
