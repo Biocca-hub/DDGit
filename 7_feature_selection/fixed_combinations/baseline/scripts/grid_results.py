@@ -1,7 +1,7 @@
 import pandas as pd
 import itertools
 
-n_outer = 5
+n_outer = 10
 n_combo = 20
 
 activations = ['relu', 'sigmoid']
@@ -19,7 +19,7 @@ for outer in range(1, n_outer + 1):
     best_combo = None
 
     for combo in range(1, n_combo + 1):
-        file = f'../input/grid_ddgit/out_{outer}/{outer}_{combo}.txt'
+        file = f'../input/grid_stratified/out_{outer}/{outer}_{combo}.txt'
         df = pd.read_csv(file, sep='\t')
         pcc = df.pcc.mean()            # media sulle inner fold
         if pcc > best_pcc:
@@ -42,4 +42,4 @@ for outer in range(1, n_outer + 1):
 
 df = pd.DataFrame(rows)
 print(df)
-df.to_csv('ddgit_grid_results.tsv', sep='\t', index=False)
+df.to_csv('../output/stratified_grid_results.tsv', sep='\t', index=False)
