@@ -2,12 +2,12 @@ import pandas as pd
 import itertools
 
 n_outer = 5
-n_combo = 96
+n_combo = 20
 
 activations = ['relu', 'sigmoid']
-dpouts = [0.1, 0.3, 0.5, 0.7]
+dpouts = [0.5]
 losses = ["L1", "MSE"]
-architectures = [[16], [128], [32, 16], [128, 32], [32, 16, 16], [128, 64, 32]]
+architectures = [[16], [128], [32, 16], [32, 16, 16], [128, 64, 32]]
 
 # deve avere lo stesso ordine usato in training_grid_slurm.py
 combos = list(itertools.product(architectures, activations, losses, dpouts))
