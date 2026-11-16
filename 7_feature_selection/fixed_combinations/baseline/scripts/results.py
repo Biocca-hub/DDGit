@@ -14,7 +14,9 @@ for p in results:
     mse.append(mean_squared_error(df.target, df.prediction))
     rmse.append(np.sqrt(mean_squared_error(df.target, df.prediction)))
 
-print(pd.DataFrame({'CV': strategies,
+results = pd.DataFrame({'CV': strategies,
               'PCC': pcc,
               'MSE': mse,
-              'RMSE': rmse}))
+              'RMSE': rmse})
+print(results)
+results.to_csv('../output/results.tsv', sep = '\t', index = False)
