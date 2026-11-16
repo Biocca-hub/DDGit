@@ -18,5 +18,5 @@ results = pd.DataFrame({'CV': strategies,
               'PCC': pcc,
               'MSE': mse,
               'RMSE': rmse})
-print(results)
-results.to_csv('../output/results.tsv', sep = '\t', index = False)
+print(results.T)
+results.T.to_csv('../output/results.tsv', sep = '\t', index = True)
