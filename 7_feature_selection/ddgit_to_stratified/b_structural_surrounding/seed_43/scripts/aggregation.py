@@ -14,7 +14,7 @@ file = 'pred_files.txt'
 files = []
 with open(file, 'r') as reader:
     for line in reader:
-        files.append(f'../input/pred_ddgit/{line.strip()}')
+        files.append(f'../input/ddgit_p/{line.strip()}')
 
 dfs = [pd.read_csv(f, sep='\t') for f in files]
 df = pd.concat(dfs, ignore_index=True)
@@ -24,7 +24,7 @@ predictions = torch.tensor(df.prediction)
 targets = torch.tensor(df.target)
 
 print(float(pearson_corr(predictions, targets)))
-
+'''
 import pandas as pd
 import seaborn as sns 
 import matplotlib.pyplot as plt
@@ -103,4 +103,4 @@ fig, ax = plt.subplots(figsize=(8, 8))
 single_scatter(ax, pred, "Nested CV (5 fold)")
 plt.tight_layout()
 plt.savefig('scatter_nested.png', dpi=300)
-plt.show()
+plt.show()'''

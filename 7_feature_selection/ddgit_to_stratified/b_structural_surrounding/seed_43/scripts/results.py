@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
-results = [f'../output/predictions_{i}.tsv' for i in ['ddgit', 'lobso', 'loco', 'stratified']]
+results = [f'../input/predictions_{i}.tsv' for i in ['ddgit', 'lobso', 'loco', 'stratified']]
 
 strategies = ['ddgit',  'lobso', 'loco', 'stratified']
 pcc = []
