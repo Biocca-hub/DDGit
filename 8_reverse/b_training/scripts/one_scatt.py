@@ -93,9 +93,9 @@ plt.rcParams.update({
 
 fig, ax = plt.subplots(figsize=(10, 15))
 
-df = pd.read_csv('../input/predictions_stratified.tsv', sep='\t')
-single_scatter(ax, df, "Predictions on 5 fold CV\n(Stratified Clustering)\n")
+df = pd.read_csv('../output/predictions_loco.tsv', sep='\t')
+single_scatter(ax, df, "Predictions on 319 fold CV\n(LOCO)\n")
 
 plt.tight_layout()
-plt.savefig("../output/strat_s4169_scatter.png", dpi=600, bbox_inches="tight")
+plt.savefig("../output/loco_fw_scatter.png", dpi=600, bbox_inches="tight")
 plt.close()

@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+-0.23027584	2.287	2HLE_A_RA95L	2HLE_A_LA95R	-0.5438684	199
+1.8975543	-0.411	2HLE_A_QA149K	2HLE_A_KA149Q	-3.429994	199
