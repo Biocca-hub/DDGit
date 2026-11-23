@@ -45,7 +45,7 @@ def single_scatter(ax, df, title):
 
     ax.scatter(
         mean_target,
-        mean_target,
+        mean_prediction,
         marker="o",
         s=20,
         color="orangered",
@@ -70,8 +70,12 @@ def single_scatter(ax, df, title):
     ax.set_ylabel("Prediction")
     ax.set_title(title)
 
-for i in ['ddgit', 'lobso', 'loco', 'stratified']:
 
+splits = ['ddgit', 'lobso', 'loco', 'stratified']
+
+for i in splits:
+
+    fw_only = f'../input/predictions_{i}.tsv'
     results = [f'../output/predictions{j}{i}.tsv' for j in ['_', '_S8338_', '_rev_']]
 
 
@@ -96,13 +100,14 @@ for i in ['ddgit', 'lobso', 'loco', 'stratified']:
                 "legend.fontsize": 20
             })
 
-    fig, axes = plt.subplots(1,3,figsize=(30, 10))
+    fig, axes = plt.subplots(1,4,figsize=(30, 10))
 
-    single_scatter(axes[0],pd.read_csv(results[0], sep ='\t'),f"Predictions on S4169\n")
-    single_scatter(axes[1],pd.read_csv(results[1], sep ='\t'),f"Predictions on S8338\n")
-    single_scatter(axes[2],pd.read_csv(results[2], sep ='\t'),f"Predictions on R4169 (Reverse)\n")
+    single_scatter(axes[0],pd.read_csv(fw_only, sep ='\t'),f"Trained on S4169\nTested on S4169\n")
+    single_scatter(axes[1],pd.read_csv(results[0], sep ='\t'),f"Trained on S8338\nTested on S4169\n")
+    single_scatter(axes[2],pd.read_csv(results[1], sep ='\t'),f"Trained on S8338\nTested on S8338\n")
+    single_scatter(axes[3],pd.read_csv(results[2], sep ='\t'),f"Trained on S8338\nTested on R4169 (Reverse)\n")
     
-    fig.suptitle(f"Performance over CV training on S8338\n({i.upper()} split)\n", fontsize=30)
+    fig.suptitle(f"Performance over CV:\n{i.upper()} split\n", fontsize=30)
 
     plt.tight_layout()
 
