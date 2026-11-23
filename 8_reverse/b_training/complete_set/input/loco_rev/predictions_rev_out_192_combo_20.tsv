@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+-0.4033717	-1.253	1KAC_A_YA489S	1KAC_A_SA489Y	0.32458267	192
+-0.8949018	-0.793	1KAC_A_SA417P	1KAC_A_PA417S	0.09739511	192
