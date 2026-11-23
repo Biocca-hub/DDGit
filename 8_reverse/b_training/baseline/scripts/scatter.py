@@ -70,7 +70,7 @@ def single_scatter(ax, df, title):
     ax.set_ylabel("Prediction")
     ax.set_title(title)
 
-results = [f'../output/predictions_{i}.tsv' for i in ['ddgit', 'lobso', 'loco', 'stratified']]
+results = [f'../output/predictions_S8338_{i}.tsv' for i in ['ddgit', 'lobso', 'loco', 'stratified']]
 
 sns.set_theme(style="whitegrid", 
                 rc={
@@ -92,7 +92,7 @@ plt.rcParams.update({
             "legend.fontsize": 20
         })
 
-fig, axes = plt.subplots(1, 4,figsize=(30, 10))
+fig, axes = plt.subplots(1,4,figsize=(30, 10))
 
 single_scatter(axes[0],pd.read_csv(results[0], sep ='\t'),f"Predictions on 5 fold CV\n(Connected Components Clustering)\n")
 single_scatter(axes[1],pd.read_csv(results[1], sep ='\t'),f"Predictions on LOBSO\n(Leave One Binding Site Out)\n")
@@ -103,7 +103,7 @@ fig.suptitle("Performance on different training procedures", fontsize=30)
 
 plt.tight_layout()
 
-plt.savefig(f"../output/comparison_scatter.png",
+plt.savefig(f"../output/comparison_S8338_scatter.png",
             dpi=600,
             bbox_inches="tight")
 

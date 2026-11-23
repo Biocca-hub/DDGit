@@ -14,11 +14,11 @@ file = 'pred_files.txt'
 files = []
 with open(file, 'r') as reader:
     for line in reader:
-        files.append(f'../input/lobso_fw/{line.strip()}')
+        files.append(f'../input/loco_p/{line.strip()}')
 
 dfs = [pd.read_csv(f, sep='\t') for f in files]
 df = pd.concat(dfs, ignore_index=True)
-df.to_csv('../output/predictions_lobso.tsv', sep = '\t', index = False)
+df.to_csv('../output/predictions_S8338_loco.tsv', sep = '\t', index = False)
 
 predictions = torch.tensor(df.prediction)
 targets = torch.tensor(df.target)
