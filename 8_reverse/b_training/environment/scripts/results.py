@@ -1,0 +1,24 @@
+import pandas as pd 
+from sklearn.metrics import mean_squared_error
+import numpy as np
+
+results = [f'../output/predictions_rev_{i}.tsv' for i in ['ddgit', 'lobso', 'loco', 'stratified']]
+
+strategies = ['ddgit',  'lobso', 'loco', 'stratified']
+pcc = []
+mse = []
+rmse = []
+for p in results:
+    df = pd.read_csv(p, sep ='\t')
+    pcc.append(np.corrcoef(df.target, df.prediction)[0, 1])
+    mse.append(mean_squared_error(df.target, df.prediction))
+    rmse.append(np.sqrt(mean_squared_error(df.target, df.prediction)))
+
+results = pd.DataFrame({'CV': strategies,
+              'PCC': pcc,
+              'MSE': mse,
+              'RMSE': rmse}).T 
+
+print(results)
+
+#results.to_csv('../output/results.tsv', sep = '\t')

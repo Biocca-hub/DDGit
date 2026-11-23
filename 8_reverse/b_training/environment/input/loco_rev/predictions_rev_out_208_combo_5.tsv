@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+0.14900085	0.247	4RA0_C_GC127R	4RA0_C_RC127G	-0.36646053	208
+-0.14957684	0.931	4RA0_C_VC92A	4RA0_C_AC92V	0.22871287	208
