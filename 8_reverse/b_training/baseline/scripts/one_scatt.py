@@ -93,9 +93,9 @@ plt.rcParams.update({
 
 fig, ax = plt.subplots(figsize=(10, 15))
 
-df = pd.read_csv('../output/predictions_lobso.tsv', sep='\t')
-single_scatter(ax, df, "Predictions on 192 fold CV\n(LOBSO)\n")
+df = pd.read_csv('../output/predictions_S8338_ddgit.tsv', sep='\t')
+single_scatter(ax, df, "Predictions on 5 fold CV\n(Our Split)\n")
 
 plt.tight_layout()
-plt.savefig("../output/lobso_fw_scatter.png", dpi=600, bbox_inches="tight")
+plt.savefig("../output/ddgit_S8338_scatter.png", dpi=600, bbox_inches="tight")
 plt.close()
