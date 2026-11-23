@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+0.13276236	-0.0	2REX_B_FB114Y	2REX_B_YB114F	-0.09415206	213
+-0.06756504	0.558	2REX_A_YA1815L	2REX_A_LA1815Y	0.11568514	213

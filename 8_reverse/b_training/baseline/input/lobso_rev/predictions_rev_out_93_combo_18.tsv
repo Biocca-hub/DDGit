@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+-0.10104709	-0.626	2I26_N_RN61S	2I26_N_SN61R	-0.034504794	93
+-0.6072654	0.03	2I26_N_VN30A	2I26_N_AN30V	0.22519183	93
