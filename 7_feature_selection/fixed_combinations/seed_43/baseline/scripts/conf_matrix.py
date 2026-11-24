@@ -47,6 +47,11 @@ for split in splits:
     total = cm.sum()
     annot = np.array([[f"{c}\n({c / total:.1%})" for c in row] for row in cm])
 
+    # MCC
+    tp, fp, tn, fn = n['tp'], n['fp'], n['tn'], n['fn']
+    denom = np.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn))
+    mcc = (tp * tn - fp * fn) / denom if denom > 0 else 0.0
+
     fig, ax = plt.subplots(figsize=(10, 9))
 
     sns.heatmap(
@@ -66,11 +71,9 @@ for split in splits:
 
     ax.set_xlabel("Predicted")
     ax.set_ylabel("Target")
-    ax.set_title(f"Confusion matrix\n({split.upper()} split)\n")
+    ax.set_title(f"Confusion matrix\n({split.upper()} split)\n\nMCC = {mcc:.3f}\n")
     ax.tick_params(axis='y', rotation=0)
 
     plt.tight_layout()
     plt.savefig(f'../output/cf_{split}_matrix.png', dpi=600, bbox_inches="tight")
     plt.close()
-
-
