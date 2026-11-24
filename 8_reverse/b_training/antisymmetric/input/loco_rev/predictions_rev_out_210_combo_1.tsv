@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+0.51786774	-2.116	5CYK_B_AB486E	5CYK_B_EB486A	-0.4297565	210
+-0.12063226	-2.68	5CYK_B_RB486E	5CYK_B_EB486R	0.10484807	210

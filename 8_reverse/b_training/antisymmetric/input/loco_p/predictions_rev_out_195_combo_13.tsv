@@ -1,0 +1,3 @@
+prediction	target	label	fw_label	fw_prediction	out_fold
+0.56493753	4.149	4MNQ_C_AC6L	4MNQ_C_LC6A	-0.7749071	195
+0.36742768	4.936	4MNQ_C_AC4K	4MNQ_C_KC4A	-0.38918743	195
